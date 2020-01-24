@@ -123,6 +123,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-Assignment01/.idea/workspace.xml
-
+.idea/
 Assignment01/.idea/
