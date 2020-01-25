@@ -1,16 +1,20 @@
 from collections import deque
 
+objData = None
+
 
 class DataClass:
     def __init__(self):
-        self.nodeList = []
+        self.node_list = []
         self.nodeNameList = []
         self.graphStack = deque()
-        self.graph = [[0 for i in range(len(self.nodeList))] for j in range(len(self.nodeList))]
+        self.graph = [[0 for i in range(len(self.node_list))] for j in range(len(self.node_list))]
 
 
 def getobjdata():
     global objData
+    if objData is None:
+        return DataClass()
     return objData
 
 
@@ -24,7 +28,7 @@ class Nodes:
         self.x = x
         self.y = y
         self.name = name
-    isBlocked = False
+    isblocked = False
 
 
 def readfromfile(start, end):
@@ -33,17 +37,17 @@ def readfromfile(start, end):
     for line in nodefile:
         nodedata = line.split()
         if len(nodedata) > 1:
-            objData.nodeList.append(Nodes(nodedata[0], int(nodedata[1]), int(nodedata[2])))
+            objData.node_list.append(Nodes(nodedata[0], int(nodedata[1]), int(nodedata[2])))
     nodefile.close()
-    objData.nodeList.sort(key=lambda x: x.name, reverse=False)
-    objData.nodeNameList = [tempnode.name for tempnode in objData.nodeList]
+    objData.node_list.sort(key=lambda x: x.name, reverse=False)
+    objData.nodeNameList = [tempnode.name for tempnode in objData.node_list]
     if objData.nodeNameList.index(start) < 0:
         print("There is no start node in the graph")
         return -1
     if objData.nodeNameList.index(end) < 0:
         print("There is no end node in the graph")
         return -1
-    objData.graph = [[0 for i in range(len(objData.nodeList))] for j in range(len(objData.nodeList))]
+    objData.graph = [[0 for i in range(len(objData.node_list))] for j in range(len(objData.node_list))]
     nodefile = open("input/connections.txt")
     for line in nodefile:
         nodedata = line.split()
