@@ -3,6 +3,7 @@ from dfs_path import get_shortest_path
 
 import traceback
 
+
 def main():
     try:
         init_data()
@@ -16,6 +17,7 @@ def main():
     except Exception as e:
         traceback.print_exc()
         raise Exception("Something went wrong. " + str(e))
+
 
 if __name__ == "__main__":
     main()

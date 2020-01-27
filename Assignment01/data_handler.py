@@ -2,6 +2,7 @@ from collections import deque
 
 obj_data = None
 
+
 class DataClass:
     def __init__(self):
         self.node_list = []
@@ -9,15 +10,18 @@ class DataClass:
         self.graph_stack = deque()
         self.graph = [[0 for i in range(len(self.node_list))] for j in range(len(self.node_list))]
 
+
 def get_obj_data():
     global obj_data
     if obj_data is None:
         return DataClass()
     return obj_data
 
+
 def init_data():
     global obj_data
     obj_data = DataClass()
+
 
 class Nodes:
     def __init__(self, name, x, y):
@@ -25,6 +29,7 @@ class Nodes:
         self.y = y
         self.name = name
     is_blocked = False
+
 
 def read_from_file(start_limit, end_limit):
     try:
