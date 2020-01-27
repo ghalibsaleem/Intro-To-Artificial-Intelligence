@@ -1,23 +1,14 @@
 import math
 
 
-def find_all_indexes(objlist, item):
-    indexlist = []
-    try:
-        print("")
-    except ValueError as e:
-        print("")
-    print("")
+def find_distance(start_limit, end_limit):
+    return math.sqrt(pow((start_limit.x - end_limit.x), 2) + pow((start_limit.y - end_limit.y), 2))
 
 
-def find_distance(start, end):
-    return math.sqrt((start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y))
-
-
-def print_stack_paths(obj_stack, start):
+def print_stack_paths(obj_stack, start_limit):
     for item in obj_stack:
-        if item.name != start:
-            print(start + " -----> " + item.name + " : " + str(item.dist))
+        if item.name != start_limit:
+            print(start_limit + " -----> " + item.name + " : " + str(item.dist))
     return
 
 

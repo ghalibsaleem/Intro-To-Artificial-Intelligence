@@ -1,5 +1,6 @@
 from collections import deque
 
+
 obj_data = None
 
 

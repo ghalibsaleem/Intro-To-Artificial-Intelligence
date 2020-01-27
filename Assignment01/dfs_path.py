@@ -1,6 +1,7 @@
 from data_handler import get_obj_data, DataClass
 from helper import find_distance, print_stack_paths
 
+
 obj_data = None
 shortest_path = [0, -1, 0, 0]
 
@@ -11,7 +12,7 @@ def get_shortest_path(start_limit, end_limit):
         find_all_path(start_limit, end_limit, 0)
         return shortest_path
     except Exception as e:
-        raise("Something went wrong.")
+        raise Exception("Something went wrong.")
 
 
 def find_all_path(start_limit, end_limit, dist):
