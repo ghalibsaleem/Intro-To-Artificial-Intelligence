@@ -1,14 +1,12 @@
 import math
 
-
-def find_all_indexes(objlist, item):
-    indexlist = []
+def find_all_indexes(obj_list, item):
+    index_list = []
     try:
         print("")
     except ValueError as e:
         print("")
     print("")
 
-
-def find_distance(start, end):
-    return math.sqrt((start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y))
+def find_distance(start_limit, end_limit):
+    return math.sqrt(pow((start_limit.x - end_limit.x), 2) + pow((start_limit.y - end_limit.y), 2))

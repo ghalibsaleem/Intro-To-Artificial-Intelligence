@@ -1,44 +1,49 @@
-from datahandler import getobjdata, DataClass
+from data_handler import get_obj_data, DataClass
 from helper import find_distance
 
-objdata = None
+obj_data = None
 shortest_path = [0, -1, 0, 0]
 
+def get_shortest_path(start_limit, end_limit):
+    try:
+        global shortest_path
+        find_all_path(start_limit, end_limit, 0)
+        return shortest_path
+    except Exception as e:
+        raise("Something went wrong.")
 
-def get_shortest_path(start, end):
-    global shortest_path
-    find_all_path(start, end, 0)
-    return shortest_path
-
-
-def find_all_path(start, end, dist):
-    global objdata
-    global shortest_path
-    ret_value = -1
-    if start == end:
-        if shortest_path[1] == -1 or shortest_path[1] > dist:
-            shortest_path[1] = dist
-        shortest_path[3] += 1
-        print("\n\nNew Path Found")
-        return 2
-    if objdata is None:
-        objdata = getobjdata()
-    tempindex = objdata.nodeNameList.index(start)
-    objdata.node_list[tempindex].isblocked = True
-    if dist == 0:
-        shortest_path[0] = tempindex
-    temps = objdata.graph[tempindex]
-    allindexes = [idx for idx, x in enumerate(temps) if x == 1]    # Finding all indexes
-    for item in allindexes:
-        if not objdata.node_list[item].isblocked:
-            temp_dist = find_distance(objdata.node_list[tempindex], objdata.node_list[item])
-            dist += temp_dist
-            # print(objdata.nodeNameList[shortest_path[0]] + "---->" + objdata.nodeNameList[item] + " : " + str(dist))
-            ret_value = find_all_path(objdata.nodeNameList[item], end, dist)
-            if ret_value == 2:
-                print(objdata.nodeNameList[shortest_path[0]] + "---->" + objdata.nodeNameList[item] + " : " + str(dist))
-            else:
-                ret_value = -1
-            dist -= temp_dist
-    objdata.node_list[tempindex].isblocked = False
-    return ret_value
+def find_all_path(start_limit, end_limit, dist):
+    try:
+        global obj_data
+        global shortest_path
+        ret_value = -1
+        if start_limit == end_limit:
+            if shortest_path[1] == -1 or shortest_path[1] > dist:
+                shortest_path[1] = dist
+            shortest_path[3] += 1
+            print("\nNew Path Found")
+            return 2
+        if obj_data is None:
+            obj_data = get_obj_data()
+        temp_index = obj_data.node_name_list.index(start_limit)
+        obj_data.node_list[temp_index].is_blocked = True
+        if dist == 0:
+            shortest_path[0] = temp_index
+        temps = obj_data.graph[temp_index]
+        # Finding all indexes
+        all_indexes = [idx for idx, x in enumerate(temps) if x == 1]
+        for item in all_indexes:
+            if not obj_data.node_list[item].is_blocked:
+                temp_dist = find_distance(obj_data.node_list[temp_index], obj_data.node_list[item])
+                dist += temp_dist
+                # print(obj_data.node_name_list[shortest_path[0]] + "---->" + obj_data.node_name_list[item] + " : " + str(dist))
+                ret_value = find_all_path(obj_data.node_name_list[item], end_limit, dist)
+                if ret_value == 2:
+                    print(obj_data.node_name_list[shortest_path[0]] + "---->" + obj_data.node_name_list[item] + " : " + str(dist))
+                else:
+                    ret_value = -1
+                dist -= temp_dist
+        obj_data.node_list[temp_index].is_blocked = False
+        return ret_value
+    except Exception as e:
+        raise Exception("Something went wrong. " + str(e))
