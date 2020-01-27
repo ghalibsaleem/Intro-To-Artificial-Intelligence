@@ -28,6 +28,7 @@ class Nodes:
         self.x = x
         self.y = y
         self.name = name
+        self.dist = 0
     isblocked = False
 
 
