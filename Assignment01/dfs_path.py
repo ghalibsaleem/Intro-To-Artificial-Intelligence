@@ -50,11 +50,11 @@ def find_all_path(start_node, end_node, dist):
         for item in all_indexes:
             if not __obj_data__.node_list[item].is_blocked:
                 temp_dist = find_distance(__obj_data__.node_list[temp_index],
-                                          __obj_data__.node_list[item])
+                                         __obj_data__.node_list[item])
                 dist += temp_dist
                 __obj_data__.node_list[item].dist = temp_dist
                 ret_value = find_all_path(__obj_data__.node_name_list[item],
-                                          end_node, dist)
+                                         end_node, dist)
                 if ret_value == 2 and __number_of_paths_to_print__ >= 0:
                     print("\nPath " + str(__total_paths__))
                     print_stack_paths(
@@ -62,10 +62,10 @@ def find_all_path(start_node, end_node, dist):
                         __obj_data__.node_name_list[__shortest_path__[0]]
                     )
                     print(__obj_data__.node_name_list[__shortest_path__[0]] +
-                          " ------ Overall -----> " + __obj_data__.node_name_list[item] + " : " +
-                          str(dist))
+                          " ------ Overall -----> " +
+                          __obj_data__.node_name_list[item] + " : " + str(dist))
                     if __shortest_path__[2] == 0 or \
-                            __shortest_path__[1] < __shortest_path__[2]:
+                       __shortest_path__[1] < __shortest_path__[2]:
                         __shortest_path__[2] = __shortest_path__[1]
                 if ret_value == 2:
                     __obj_data__.node_list[item].is_blocked = False

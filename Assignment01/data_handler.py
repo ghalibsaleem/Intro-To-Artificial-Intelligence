@@ -33,10 +33,10 @@ class Nodes:
         self.is_blocked = False
 
 
-def read_from_file(start_node, end_node):
+def read_from_file(start_node, end_node, locations_file, connections_file):
     try:
         global __obj_data__
-        node_file = open("input/locations.txt")
+        node_file = open(locations_file)
         for line in node_file:
             node_data = line.split()
             if len(node_data) > 1:
@@ -53,7 +53,7 @@ def read_from_file(start_node, end_node):
             raise Exception("There is no end node in the graph")
         __obj_data__.graph = [[0 for i in range(len(__obj_data__.node_list))]
                               for j in range(len(__obj_data__.node_list))]
-        node_file = open("input/connections.txt")
+        node_file = open(connections_file)
         for line in node_file:
             node_data = line.split()
             if len(node_data) > 1:
