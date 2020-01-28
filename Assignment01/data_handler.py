@@ -1,6 +1,5 @@
 from collections import deque
 
-
 __obj_data__ = None
 
 
@@ -45,7 +44,7 @@ def read_from_file(start_node, end_node):
                     Nodes(node_data[0], int(node_data[1]), int(node_data[2]))
                 )
         node_file.close()
-        __obj_data__.node_list.sort(key = lambda each_node: each_node.name)
+        __obj_data__.node_list.sort(key=lambda each_node: each_node.name)
         __obj_data__.node_name_list = \
             [temp_node.name for temp_node in __obj_data__.node_list]
         if __obj_data__.node_name_list.index(start_node) < 0:
@@ -53,7 +52,7 @@ def read_from_file(start_node, end_node):
         if __obj_data__.node_name_list.index(end_node) < 0:
             raise Exception("There is no end node in the graph")
         __obj_data__.graph = [[0 for i in range(len(__obj_data__.node_list))]
-                          for j in range(len(__obj_data__.node_list))]
+                              for j in range(len(__obj_data__.node_list))]
         node_file = open("input/connections.txt")
         for line in node_file:
             node_data = line.split()
