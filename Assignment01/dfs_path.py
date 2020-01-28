@@ -1,7 +1,6 @@
 from data_handler import get_obj_data
 from helper import find_distance, print_stack_paths
 
-
 __obj_data__ = None
 __shortest_path__ = [0, -1, 0, 0]
 __number_of_paths_to_print__ = 1
@@ -30,6 +29,13 @@ def find_all_path(start_node, end_node, dist):
         ret_value = -1
         # if __number_of_paths_to_print__ <= 0:
         #     return -1
+
+        if __obj_data__ is None:
+            __obj_data__ = get_obj_data()
+        temp_index = __obj_data__.node_name_list.index(start_node)
+        __obj_data__.node_list[temp_index].is_blocked = True
+        # __obj_data__.node_list[temp_index].dist = dist
+        __obj_data__.graph_stack.append(__obj_data__.node_list[temp_index])
         if start_node == end_node:
             if __shortest_path__[1] == -1 or __shortest_path__[1] > dist:
                 __shortest_path__[1] = dist
@@ -37,12 +43,6 @@ def find_all_path(start_node, end_node, dist):
             __number_of_paths_to_print__ -= 1
             __total_paths__ += 1
             return 2
-        if __obj_data__ is None:
-            __obj_data__ = get_obj_data()
-        temp_index = __obj_data__.node_name_list.index(start_node)
-        __obj_data__.node_list[temp_index].is_blocked = True
-        __obj_data__.node_list[temp_index].dist = dist
-        __obj_data__.graph_stack.append(__obj_data__.node_list[temp_index])
         if dist == 0:
             __shortest_path__[0] = temp_index
         temps = __obj_data__.graph[temp_index]
@@ -50,10 +50,11 @@ def find_all_path(start_node, end_node, dist):
         for item in all_indexes:
             if not __obj_data__.node_list[item].is_blocked:
                 temp_dist = find_distance(__obj_data__.node_list[temp_index],
-                                         __obj_data__.node_list[item])
+                                          __obj_data__.node_list[item])
                 dist += temp_dist
+                __obj_data__.node_list[item].dist = temp_dist
                 ret_value = find_all_path(__obj_data__.node_name_list[item],
-                                         end_node, dist)
+                                          end_node, dist)
                 if ret_value == 2 and __number_of_paths_to_print__ >= 0:
                     print("\nPath " + str(__total_paths__))
                     print_stack_paths(
@@ -61,13 +62,14 @@ def find_all_path(start_node, end_node, dist):
                         __obj_data__.node_name_list[__shortest_path__[0]]
                     )
                     print(__obj_data__.node_name_list[__shortest_path__[0]] +
-                          "---->" + __obj_data__.node_name_list[item] + " : " +
+                          " ------ Overall -----> " + __obj_data__.node_name_list[item] + " : " +
                           str(dist))
                     if __shortest_path__[2] == 0 or \
-                       __shortest_path__[1] < __shortest_path__[2]:
+                            __shortest_path__[1] < __shortest_path__[2]:
                         __shortest_path__[2] = __shortest_path__[1]
-                else:
-                    ret_value = -1
+                if ret_value == 2:
+                    __obj_data__.node_list[item].is_blocked = False
+                    __obj_data__.graph_stack.pop()
                 dist -= temp_dist
         __obj_data__.node_list[temp_index].is_blocked = False
         __obj_data__.graph_stack.pop()
