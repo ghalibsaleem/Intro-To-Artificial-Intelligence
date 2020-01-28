@@ -1,7 +1,7 @@
 from collections import deque
 
 
-obj_data = None
+__obj_data__ = None
 
 
 class DataClass:
@@ -9,19 +9,21 @@ class DataClass:
         self.node_list = []
         self.node_name_list = []
         self.graph_stack = deque()
-        self.graph = [[0 for i in range(len(self.node_list))] for j in range(len(self.node_list))]
+        self.graph = \
+            [[0 for i in range(len(self.node_list))]
+             for j in range(len(self.node_list))]
 
 
 def get_obj_data():
-    global obj_data
-    if obj_data is None:
+    global __obj_data__
+    if __obj_data__ is None:
         return DataClass()
-    return obj_data
+    return __obj_data__
 
 
 def init_data():
-    global obj_data
-    obj_data = DataClass()
+    global __obj_data__
+    __obj_data__ = DataClass()
 
 
 class Nodes:
@@ -29,34 +31,38 @@ class Nodes:
         self.x = x
         self.y = y
         self.name = name
-    is_blocked = False
+        self.is_blocked = False
 
 
-def read_from_file(start_limit, end_limit):
+def read_from_file(start_node, end_node):
     try:
-        global obj_data
+        global __obj_data__
         node_file = open("input/locations.txt")
         for line in node_file:
             node_data = line.split()
             if len(node_data) > 1:
-                obj_data.node_list.append(Nodes(node_data[0], int(node_data[1]), int(node_data[2])))
+                __obj_data__.node_list.append(
+                    Nodes(node_data[0], int(node_data[1]), int(node_data[2]))
+                )
         node_file.close()
-        obj_data.node_list.sort(key = lambda each_node: each_node.name)
-        obj_data.node_name_list = [temp_node.name for temp_node in obj_data.node_list]
-        if obj_data.node_name_list.index(start_limit) < 0:
-            raise Exception("There is no start_limit node in the graph")
-        if obj_data.node_name_list.index(end_limit) < 0:
-            raise Exception("There is no end_limit node in the graph")
-        obj_data.graph = [[0 for i in range(len(obj_data.node_list))] for j in range(len(obj_data.node_list))]
+        __obj_data__.node_list.sort(key = lambda each_node: each_node.name)
+        __obj_data__.node_name_list = \
+            [temp_node.name for temp_node in __obj_data__.node_list]
+        if __obj_data__.node_name_list.index(start_node) < 0:
+            raise Exception("There is no start node in the graph")
+        if __obj_data__.node_name_list.index(end_node) < 0:
+            raise Exception("There is no end node in the graph")
+        __obj_data__.graph = [[0 for i in range(len(__obj_data__.node_list))]
+                          for j in range(len(__obj_data__.node_list))]
         node_file = open("input/connections.txt")
         for line in node_file:
             node_data = line.split()
             if len(node_data) > 1:
-                columns = obj_data.node_name_list.index(node_data[0])
+                columns = __obj_data__.node_name_list.index(node_data[0])
                 count = int(node_data[1])
                 for x in range(0, count):
-                    row = obj_data.node_name_list.index(node_data[2 + x])
-                    obj_data.graph[columns][row] = 1
+                    row = __obj_data__.node_name_list.index(node_data[2 + x])
+                    __obj_data__.graph[columns][row] = 1
         node_file.close()
         return 1
     except Exception as e:
