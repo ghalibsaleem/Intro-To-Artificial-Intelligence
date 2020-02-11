@@ -7,10 +7,10 @@ class DataClass:
     def __init__(self):
         self.node_list = []
         self.node_name_list = []
-        self.graph_stack = deque()
         self.graph = \
             [[0 for i in range(len(self.node_list))]
              for j in range(len(self.node_list))]
+        self.open_node_list = []
 
 
 def get_obj_data():
@@ -31,6 +31,11 @@ class Nodes:
         self.y = y
         self.name = name
         self.is_blocked = False
+        self.next = []
+        self.parent = None
+        self.curr_dist = -1
+        self.estimate = -1
+        self.total_dist = -1
 
 
 def read_from_file(start_node, end_node, locations_file, connections_file):
@@ -62,6 +67,7 @@ def read_from_file(start_node, end_node, locations_file, connections_file):
                 for x in range(0, count):
                     row = __obj_data__.node_name_list.index(node_data[2 + x])
                     __obj_data__.graph[columns][row] = 1
+                    __obj_data__.node_list[columns].next.append(row)
         node_file.close()
         return 1
     except Exception as e:
