@@ -1,6 +1,7 @@
 import traceback
 import sys
 from data_handler import init_data, read_from_file
+from heuristics.a_star import a_star
 
 
 def main(arguments):
@@ -13,7 +14,7 @@ def main(arguments):
         connections_file = arguments[2]
         start_node = input("Enter the start point of the graph: ")
         end_node = input("Enter the end point of the graph: ")
-        number_of_paths = input("Enter number of path you want to see: ")
+        number_of_paths = input("Enter Heuristics: ")
         if not number_of_paths:
             number_of_paths = 1
         else:
@@ -22,6 +23,9 @@ def main(arguments):
                                   connections_file)
         if ret_value < 0:
             raise Exception("Something blew up while reading the input files.")
+
+        a_star(number_of_paths, start_node, end_node)
+
         # shortest_path = get_shortest_path(start_node, end_node, number_of_paths)
         # print("The Shortest Path among the displayed paths from " +
         #       start_node + " ------> " + end_node + " : " +
