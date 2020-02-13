@@ -133,10 +133,13 @@ def check_node(node_check):
     print("")
 
 
-def a_star(heuristics_no, start_node, end_node, step_flag):
+def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
     try:
         global __obj_data__
         global __shortest_dist__
+        if start_node == end_node:
+            print("Start City and End City is same")
+            return
         if __obj_data__ is None:
             __obj_data__ = get_obj_data()
         temp_index = __obj_data__.node_name_list.index(start_node)
@@ -153,14 +156,16 @@ def a_star(heuristics_no, start_node, end_node, step_flag):
                     if open_node[0] == current_index:
                         __obj_data__.open_node_list.remove(open_node)
                         break
-
+            # Step by Step
             if current_index == temp_index and step_flag:
                 break
 
             for item in __obj_data__.node_list[current_index].next:
-                if check_in_same_path(current_index, item):
+                if check_in_same_path(current_index, item) or cities_excluded.__contains__(__obj_data__.node_name_list[item]):
                     continue
+
                 item_dist = calculate_node_dist(heuristics_no, item, current_index)
+                # Step by Step
                 if __shortest_dist__ > 0 and not step_flag:
                     for open_node in __obj_data__.open_node_list:
                         if open_node[1] > __shortest_dist__:
@@ -169,6 +174,8 @@ def a_star(heuristics_no, start_node, end_node, step_flag):
                     if __shortest_dist__ == -1 or __shortest_dist__ > item_dist:
                         __shortest_dist__ = item_dist
                         __obj_data__.node_list[item].parent = current_index
+
+                        # Step by Step
                         if not step_flag:
                             update_node_dist(heuristics_no, item)
                             for open_node in __obj_data__.open_node_list:
@@ -207,6 +214,8 @@ def a_star(heuristics_no, start_node, end_node, step_flag):
                 if open_node[0] == current_index:
                     __obj_data__.open_node_list.remove(open_node)
                     break
+
+            # Step by Step
             if step_flag:
                 print("City selected: " + __obj_data__.node_name_list[current_index])
                 user_input_print(current_index)
@@ -218,7 +227,10 @@ def a_star(heuristics_no, start_node, end_node, step_flag):
                 __obj_data__.open_node_list.sort(key=lambda x: x[1])
                 if len(__obj_data__.open_node_list) > 0:
                     current_index = __obj_data__.open_node_list[0][0]
-        path_print(temp_index, temp_index)
-        print("\nTotal distance: " + str(__shortest_dist__))
+        if __shortest_dist__ >= 0:
+            path_print(temp_index, temp_index)
+            print("\nTotal distance: " + str(__shortest_dist__))
+        else:
+            print("No path found")
     except Exception as e:
         raise Exception("Something went wrong. " + str(e))

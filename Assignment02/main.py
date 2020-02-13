@@ -14,8 +14,12 @@ def main(arguments):
         connections_file = arguments[2]
         start_node = input("Enter the start point of the graph: ")
         end_node = input("Enter the end point of the graph: ")
-        number_of_paths = input("Enter Heuristics: \n1 for Straight line distance \n2 Fewest Cities\n-->")
+        cities_excluded = input("Enter Cities excluded (it should be comma separated eg. A1,A2)")
         step_flag = input("Do you want step by step solution (Yes or No) :")
+        number_of_paths = input("Enter Heuristics: \n1 for Straight line distance \n2 Fewest Cities\n-->")
+
+        cities_excluded = cities_excluded.split(",")
+
         if not number_of_paths:
             number_of_paths = 1
         else:
@@ -29,7 +33,7 @@ def main(arguments):
         if ret_value < 0:
             raise Exception("Something blew up while reading the input files.")
 
-        a_star(number_of_paths, start_node, end_node, step_flag)
+        a_star(number_of_paths, start_node, end_node, step_flag, cities_excluded)
 
         # shortest_path = get_shortest_path(start_node, end_node, number_of_paths)
         # print("The Shortest Path among the displayed paths from " +
