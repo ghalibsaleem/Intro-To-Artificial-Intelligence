@@ -131,8 +131,13 @@ def user_input_print(current_index):
         raise Exception("Something went wrong in user input print" + str(e))
 
 
-def check_node(node_check):
-    print("")
+def path_detailed_print(index, end_index):
+    if index is not None:
+        parent_index = __obj_data__.node_list[index].parent
+        path_detailed_print(__obj_data__.node_list[index].parent, end_index)
+        if parent_index is not None:
+            length = __obj_data__.node_list[index].curr_dist - __obj_data__.node_list[parent_index].curr_dist
+            print(__obj_data__.node_list[parent_index].name + " to " + __obj_data__.node_list[index].name + " length " + str(length))
 
 
 def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
@@ -158,6 +163,11 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
                     if open_node[0] == current_index:
                         __obj_data__.open_node_list.remove(open_node)
                         break
+            if temp_index == current_index:
+                item_dist = __obj_data__.node_list[current_index].total_dist
+                if __shortest_dist__ == -1 or __shortest_dist__ > item_dist:
+                    __shortest_dist__ = item_dist
+                    __obj_data__.open_node_list = [x for x in __obj_data__.open_node_list if x[1] < __shortest_dist__]
 
             for item in __obj_data__.node_list[current_index].next:
                 if check_in_same_path(current_index, item) or cities_excluded.__contains__(
@@ -165,42 +175,31 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
                     continue
 
                 item_dist = calculate_node_dist(heuristics_no, item, current_index)
-                # Step by Step
+
                 if __shortest_dist__ > 0:
-                    for open_node in __obj_data__.open_node_list:
-                        if open_node[1] > __shortest_dist__:
-                            __obj_data__.open_node_list.remove(open_node)
-                if temp_index == item:
-                    if __shortest_dist__ == -1 or __shortest_dist__ > item_dist:
-                        __shortest_dist__ = item_dist
+                    __obj_data__.open_node_list = [x for x in __obj_data__.open_node_list if x[1] < __shortest_dist__]
+
+                has_item = False
+                item_index = -1
+                for index, dist in __obj_data__.open_node_list:
+                    item_index += 1
+                    if index == item:
+                        has_item = True
+                        break
+
+                if has_item:
+                    if item_dist < __obj_data__.open_node_list[item_index][1]:
+                        __obj_data__.open_node_list[item_index][1] = item_dist
                         __obj_data__.node_list[item].parent = current_index
                         update_node_dist(heuristics_no, item)
-                        for open_node in __obj_data__.open_node_list:
-                            if open_node[1] > __shortest_dist__:
-                                __obj_data__.open_node_list.remove(open_node)
-
                 else:
-                    has_item = False
-                    item_index = -1
-                    for index, dist in __obj_data__.open_node_list:
-                        item_index += 1
-                        if index == item:
-                            has_item = True
-                            break
+                    if (item_dist < __obj_data__.node_list[item].total_dist
+                        or __obj_data__.node_list[item].total_dist == -1) and (
+                            __shortest_dist__ == -1 or item_dist <= __shortest_dist__):
 
-                    if has_item:
-                        if item_dist < __obj_data__.open_node_list[item_index][1]:
-                            __obj_data__.open_node_list[item_index][1] = item_dist
-                            __obj_data__.node_list[item].parent = current_index
-                            update_node_dist(heuristics_no, item)
-                    else:
-                        if (item_dist < __obj_data__.node_list[item].total_dist
-                            or __obj_data__.node_list[item].total_dist == -1) and (
-                                __shortest_dist__ == -1 or item_dist <= __shortest_dist__):
-
-                            __obj_data__.open_node_list.append([item, item_dist])
-                            __obj_data__.node_list[item].parent = current_index
-                            update_node_dist(heuristics_no, item)
+                        __obj_data__.open_node_list.append([item, item_dist])
+                        __obj_data__.node_list[item].parent = current_index
+                        update_node_dist(heuristics_no, item)
 
             for open_node in __obj_data__.open_node_list:
                 if open_node[0] == current_index:
@@ -216,8 +215,9 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
             if len(__obj_data__.open_node_list) > 0:
                 current_index = __obj_data__.open_node_list[0][0]
         if __shortest_dist__ >= 0:
+            path_detailed_print(temp_index, temp_index)
             path_print(temp_index, temp_index)
-            print("\nTotal distance: " + str(__shortest_dist__))
+            print("\nTotal path length: " + str(__shortest_dist__))
         else:
             print("No path found")
     except Exception as e:
