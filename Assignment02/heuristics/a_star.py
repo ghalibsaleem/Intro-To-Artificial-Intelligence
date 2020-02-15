@@ -83,9 +83,9 @@ def update_node_dist(heuristics_no, index):
         if heuristics_no == 1:
             dist = 0
             if __obj_data__.node_list[index].parent is not None:
-                dist = calculate_current_and_total_and_distance(index,
-                                                                __obj_data__.node_list[
-                                                                    index].parent)
+                dist = calculate_current_and_total_and_distance(
+                           index, __obj_data__.node_list[ index].parent
+                       )
             else:
                 dist = __obj_data__.node_list[index].estimate
             __obj_data__.node_list[index].total_dist = dist
@@ -94,7 +94,8 @@ def update_node_dist(heuristics_no, index):
         elif heuristics_no == 2:
             if __obj_data__.node_list[index].parent is not None:
                 dist = __obj_data__.node_list[
-                           __obj_data__.node_list[index].parent].curr_dist + 1
+                           __obj_data__.node_list[index].parent
+                       ].curr_dist + 1
             else:
                 dist = 0
             __obj_data__.node_list[index].curr_dist = dist
@@ -164,21 +165,16 @@ def update_graph(frame_number):
         current = node_list[1]
         no_of_neighbours = node_list[2]
         edge_list = []
-        childs = [current]
+        childs = []
         edge_labels = {}
         if no_of_neighbours > 0:
             childs.extend(node_list[3].split(" "))
             for i in range(0, len(childs)):
                 edge_list.append((current, childs[i]))
                 edge_dist = \
-                    find_distance(
-                        __obj_data__.node_list[
-                            __obj_data__.node_name_list.index(current)
-                        ],
-                        __obj_data__.node_list[
-                            __obj_data__.node_name_list.index(childs[i])
-                        ]
-                    )
+                    __obj_data__.node_list[
+                        __obj_data__.node_name_list.index(childs[i])
+                    ].curr_dist
                 edge_labels.update({(current, childs[i]): round(edge_dist, 2)})
 
         nx.draw_networkx_nodes(
@@ -191,20 +187,6 @@ def update_graph(frame_number):
             __animation_graph__.graph_viz, __animation_graph__.pos,
             edgelist=[(parent, current)], width=3, edge_color='blue',
             alpha=0.5
-        )
-        dist = \
-            find_distance(
-                __obj_data__.node_list[
-                    __obj_data__.node_name_list.index(parent)
-                ],
-                __obj_data__.node_list[
-                    __obj_data__.node_name_list.index(current)
-                ]
-            )
-        nx.draw_networkx_edge_labels(
-            __animation_graph__.graph_viz, __animation_graph__.pos,
-            edge_labels={(parent, current): round(dist, 2)}, label_pos=0.5,
-            font_size=5
         )
         nx.draw_networkx_edges(
             __animation_graph__.graph_viz, __animation_graph__.pos,
@@ -297,13 +279,15 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
                             item] + " "
                 else:
                     if (item_dist < __obj_data__.node_list[item].total_dist
-                        or __obj_data__.node_list[item].total_dist == -1) and (
-                            __shortest_dist__ == -1 or item_dist <= __shortest_dist__):
+                        or __obj_data__.node_list[item].total_dist == -1) and \
+                           (__shortest_dist__ == -1 or
+                            item_dist <= __shortest_dist__):
                         __obj_data__.open_node_list.append([item, item_dist])
                         __obj_data__.node_list[item].parent = current_index
                         update_node_dist(heuristics_no, item)
-                        child_names = child_names + __obj_data__.node_name_list[
-                            item] + " "
+                        child_names = \
+                            child_names + __obj_data__.node_name_list[item] + \
+                            " "
 
             for open_node in __obj_data__.open_node_list:
                 if open_node[0] == current_index:
