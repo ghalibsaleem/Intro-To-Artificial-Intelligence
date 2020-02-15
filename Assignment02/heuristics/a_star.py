@@ -137,7 +137,8 @@ def path_detailed_print(index, end_index):
         path_detailed_print(__obj_data__.node_list[index].parent, end_index)
         if parent_index is not None:
             length = __obj_data__.node_list[index].curr_dist - __obj_data__.node_list[parent_index].curr_dist
-            print(__obj_data__.node_list[parent_index].name + " to " + __obj_data__.node_list[index].name + " length " + str(length))
+            print(__obj_data__.node_list[parent_index].name + " to " + __obj_data__.node_list[
+                index].name + " length " + str(length))
 
 
 def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
@@ -168,13 +169,14 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
                 if __shortest_dist__ == -1 or __shortest_dist__ > item_dist:
                     __shortest_dist__ = item_dist
                     __obj_data__.open_node_list = [x for x in __obj_data__.open_node_list if x[1] < __shortest_dist__]
-
+            child_names = ""
             for item in __obj_data__.node_list[current_index].next:
                 if check_in_same_path(current_index, item) or cities_excluded.__contains__(
                         __obj_data__.node_name_list[item]):
                     continue
 
                 item_dist = calculate_node_dist(heuristics_no, item, current_index)
+                child_names = child_names + __obj_data__.node_name_list[item] + " "
 
                 if __shortest_dist__ > 0:
                     __obj_data__.open_node_list = [x for x in __obj_data__.open_node_list if x[1] < __shortest_dist__]
@@ -196,7 +198,6 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
                     if (item_dist < __obj_data__.node_list[item].total_dist
                         or __obj_data__.node_list[item].total_dist == -1) and (
                             __shortest_dist__ == -1 or item_dist <= __shortest_dist__):
-
                         __obj_data__.open_node_list.append([item, item_dist])
                         __obj_data__.node_list[item].parent = current_index
                         update_node_dist(heuristics_no, item)
@@ -211,9 +212,20 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
                 print("City selected: " + __obj_data__.node_name_list[current_index])
                 user_input_print(current_index)
 
+            if __obj_data__.node_list[current_index].parent is not None:
+                __obj_data__.graph_dt.append([__obj_data__.node_name_list[__obj_data__.node_list[current_index].parent],
+                                              __obj_data__.node_list[current_index].name,
+                                              len(__obj_data__.node_list[current_index].next) - 1,
+                                              child_names.rstrip()])
+            else:
+                __obj_data__.graph_dt.append(["",
+                                              __obj_data__.node_list[current_index].name,
+                                              len(__obj_data__.node_list[current_index].next) - 1,
+                                              child_names.rstrip()])
             __obj_data__.open_node_list.sort(key=lambda x: x[1])
             if len(__obj_data__.open_node_list) > 0:
                 current_index = __obj_data__.open_node_list[0][0]
+
         if __shortest_dist__ >= 0:
             path_detailed_print(temp_index, temp_index)
             path_print(temp_index, temp_index)
