@@ -1,8 +1,13 @@
-from data_handler import get_obj_data
+from data_handler import get_obj_data, get_animation_obj
 from helper import find_distance
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+import networkx as nx
 
 __obj_data__ = None
 __shortest_dist__ = -1
+__animation_graph__ = None
+__end_node_index__ = 0
 
 
 def calculate_straight_line_distance(end_node):
@@ -141,13 +146,93 @@ def path_detailed_print(index, end_index):
                 index].name + " length " + str(length))
 
 
+def update_graph(frame_number):
+    try:
+        global __end_node_index__
+        global __obj_data__
+        final_path = []
+        print("frame_number: " + str(frame_number))
+        node_list = __obj_data__.graph_dt[frame_number]
+        parent = node_list[0]
+        current = node_list[1]
+        no_of_neighbours = node_list[2]
+        edge_list = []
+        childs = [current]
+        edge_labels = {}
+        if no_of_neighbours > 0:
+            childs.extend(node_list[3].split(" "))
+            for i in range(0, len(childs)):
+                edge_list.append((current, childs[i]))
+                edge_dist = \
+                    find_distance(
+                        __obj_data__.node_list[
+                            __obj_data__.node_name_list.index(current)
+                        ],
+                        __obj_data__.node_list[
+                                __obj_data__.node_name_list.index(childs[i])
+                        ]
+                    )
+                edge_labels.update({(current, childs[i]): round(edge_dist, 2)})
+
+        nx.draw_networkx_nodes(
+            __animation_graph__.graph_viz, __animation_graph__.pos,
+            nodelist=childs, node_size=100, node_color='red', alpha=0.8
+        )
+        if parent == "":
+            parent = current
+        nx.draw_networkx_edges(
+            __animation_graph__.graph_viz, __animation_graph__.pos,
+            edgelist=[(parent, current)], width=3, edge_color='blue',
+            alpha = 0.5
+        )
+        dist = \
+            find_distance(
+                __obj_data__.node_list[
+                    __obj_data__.node_name_list.index(parent)
+                ],
+                __obj_data__.node_list[
+                    __obj_data__.node_name_list.index(current)
+                ]
+            )
+        nx.draw_networkx_edge_labels(
+            __animation_graph__.graph_viz, __animation_graph__.pos,
+            edge_labels={(parent, current): round(dist, 2)}, label_pos=0.5,
+            font_size=5
+        )
+        nx.draw_networkx_edges(
+            __animation_graph__.graph_viz, __animation_graph__.pos,
+            edgelist=edge_list, width=2, edge_color='red', alpha=0.5,
+            style="dashed"
+        )
+        nx.draw_networkx_edge_labels(
+            __animation_graph__.graph_viz, __animation_graph__.pos,
+            edge_labels=edge_labels, label_pos=0.5, font_size=5
+        )
+        if (len(__obj_data__.graph_dt) - 1) == frame_number:
+            end_node = __obj_data__.node_list[__end_node_index__]
+            while end_node.parent is not None:
+                final_path.append((__obj_data__.node_list[end_node.parent].name,
+                                   end_node.name))
+                end_node = __obj_data__.node_list[end_node.parent]
+            nx.draw_networkx_edges(
+                __animation_graph__.graph_viz, __animation_graph__.pos,
+                edgelist=final_path, width=5, edge_color='black', alpha=0.5
+            )
+    except Exception as e:
+        raise Exception("Something went wrong. " + str(e))
+
+
 def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
     try:
         global __obj_data__
         global __shortest_dist__
+        global __animation_graph__
+        global __end_node_index__
         if start_node == end_node:
             print("Start City and End City is same")
             return
+        if __animation_graph__ is None:
+            __animation_graph__ = get_animation_obj()
         if __obj_data__ is None:
             __obj_data__ = get_obj_data()
         temp_index = __obj_data__.node_name_list.index(start_node)
@@ -157,6 +242,7 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
 
         current_index = temp_index
         temp_index = __obj_data__.node_name_list.index(end_node)
+        __end_node_index__ = temp_index
         while len(__obj_data__.open_node_list) > 0:  # and current_index != temp_index:
 
             if len(__obj_data__.node_list[current_index].next) == 0:
@@ -225,12 +311,17 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
             __obj_data__.open_node_list.sort(key=lambda x: x[1])
             if len(__obj_data__.open_node_list) > 0:
                 current_index = __obj_data__.open_node_list[0][0]
-
         if __shortest_dist__ >= 0:
             path_detailed_print(temp_index, temp_index)
             path_print(temp_index, temp_index)
             print("\nTotal path length: " + str(__shortest_dist__))
         else:
             print("No path found")
+        print("len(__obj_data__.graph_dt): " + str(len(__obj_data__.graph_dt)))
+        anim = FuncAnimation(
+                   plt.gcf(), update_graph, frames=len(__obj_data__.graph_dt),
+                   interval=500, repeat=False
+               )
+        plt.show()
     except Exception as e:
         raise Exception("Something went wrong. " + str(e))
