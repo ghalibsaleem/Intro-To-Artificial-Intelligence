@@ -316,21 +316,23 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
                     current_index])
                 user_input_print(current_index)
 
+            if len(child_names) < 1:
+                temp_len = 0
+            else:
+                temp_len = len(child_names.split())
             if __obj_data__.node_list[current_index].parent is not None:
                 __obj_data__.graph_dt.append([__obj_data__.node_name_list[
                                                   __obj_data__.node_list[
                                                       current_index].parent],
                                               __obj_data__.node_list[
                                                   current_index].name,
-                                              len(__obj_data__.node_list[
-                                                      current_index].next) - 1,
+                                              temp_len,
                                               child_names.rstrip()])
             else:
                 __obj_data__.graph_dt.append(["",
                                               __obj_data__.node_list[
                                                   current_index].name,
-                                              len(__obj_data__.node_list[
-                                                      current_index].next) - 1,
+                                              temp_len,
                                               child_names.rstrip()])
             __obj_data__.open_node_list.sort(key=lambda x: x[1])
             if len(__obj_data__.open_node_list) > 0:
