@@ -11,6 +11,7 @@ class DataClass:
             [[0 for i in range(len(self.node_list))]
              for j in range(len(self.node_list))]
         self.open_node_list = []
+        self.graph_dt = []
 
 
 def get_obj_data():
