@@ -174,7 +174,7 @@ def update_graph(frame_number):
                 edge_dist = \
                     __obj_data__.node_list[
                         __obj_data__.node_name_list.index(childs[i])
-                    ].curr_dist
+                    ].total_dist
                 edge_labels.update({(current, childs[i]): round(edge_dist, 2)})
 
         nx.draw_networkx_nodes(
@@ -325,11 +325,13 @@ def a_star(heuristics_no, start_node, end_node, step_flag, cities_excluded):
             path_detailed_print(temp_index, temp_index)
             path_print(temp_index, temp_index)
             print("\nTotal path length: " + str(__shortest_dist__))
-            anim = FuncAnimation(
-                plt.gcf(), update_graph, frames=len(__obj_data__.graph_dt),
-                interval=500, repeat=False
-            )
-            plt.show()
+            show_graph = input("Do you want show graph? (Yes or No): ")
+            if show_graph == "Yes" or show_graph == "yes" or show_graph == "y":
+                anim = FuncAnimation(
+                    plt.gcf(), update_graph, frames=len(__obj_data__.graph_dt),
+                    interval=500, repeat=False
+                )
+                plt.show()
         else:
             print("No path found")
     except Exception as e:
