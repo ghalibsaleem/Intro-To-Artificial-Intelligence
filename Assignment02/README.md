@@ -7,9 +7,8 @@
 
 The purpose of this assignment is to traverse a graph using A-Star search using different type of heuristics and print out all the possible paths using same heuristics of A-Star.
 
-The very first path printed is the DFS path where DFS traversal was done based on the increasing order of alphanumeric strings.
-
-User enters the starting node (from where the traversal will start) and the ending node (where the traversing will end) and the total number of DFS paths that the user wants to see (since there can be many different DFS paths in the graph).
+User enters the starting node (from where the traversal will start), the ending node (where the traversing will end), whether step by step option enables or not, and heuristics.
+After finding path program will ask to show graph or not 
 
 ```
 Requirement: Python 3.7.5 or later 
@@ -20,7 +19,7 @@ Requirement: Python 3.7.5 or later
 ```
 Assignment01             // Root Folder
 ├── data_handler.py      // File that reads the input files
-├── dfs_path.py          // File that performs actual DFS processing
+├── a_star.py          // File that performs actual A-Star
 ├── helper.py            // File containing helper functions 
 ├── input                // Folder containing input files
 │   ├── connections.txt  // Connect of nodes in the graph
@@ -51,35 +50,24 @@ NOTE: The two input files containing locations and connections are requied and s
 #### Output ####
 
 ```
-Path 1
-A1 -----> A2 : 130.0
-A2 -----> A4 : 305.0
-A4 -----> A5 : 90.0
-A5 -----> C5 : 306.0
-C5 -----> B5 : 229.16587878652442
-B5 -----> B4 : 36.05551275463989
-B4 -----> C4 : 96.0
-C4 -----> C3 : 155.72411502397438
-C3 -----> B2 : 131.21737689803132
-B2 -----> B1 : 113.0
-B1 -----> D1 : 231.0
-D1 -----> D2 : 126.0
-D2 -----> F2 : 162.00308639035245
-F2 -----> E4 : 303.03300150313663
-E4 -----> D4 : 137.01459776242822
-D4 -----> D5 : 100.0
-D5 -----> F5 : 263.0
-F5 -----> E5 : 81.78630692236935
-E5 -----> G4b : 140.41723540933285
-G4b -----> G2b : 231.0
-G2b -----> G2 : 27.018512172212592
-G2 -----> G4 : 232.0
-G4 -----> G5 : 191.0
-A1 ------ Overall -----> G5 : 3817.435623623003
+Enter the start point of the graph: A1
+Enter the end point of the graph: D3
+Enter Cities excluded (it should be comma separated eg. A1,A2): 
+Do you want step by step solution (Yes or No): n
+Enter Heuristics: 
+1 for Straight line distance 
+2 Fewest Cities
+--> 1
+A1 to B1 length 177.0
+B1 to B2 length 112.99999999999994
+B2 to C3 length 131.21737689803132
+C3 to C4 length 155.72411502397426
+C4 to D4 length 215.10230124292025
+D4 to D3 length 138.0
+A1 ---> B1 ---> B2 ---> C3 ---> C4 ---> D4 ---> D3
+Total path length: 930.0437931649258
+Do you want show graph? (Yes or No): y
 
-Total number of paths found: 2486
-The Shortest Path among the displayed paths from A1 ------> G5 : 3817.435623623003
-The overall Shortest Path from A1 ------> G5 : 1217.320939639531
 ```
 
 * Line => Path1
