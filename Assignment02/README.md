@@ -5,7 +5,7 @@
 1) Divyanshu Gupta : U21369422
 2) Ghalib Saleem : U03151409
 
-The purpose of this assignment is to traverse a graph using Depth First search and print out all the possible paths using Depth First Search.
+The purpose of this assignment is to traverse a graph using A-Star search using different type of heuristics and print out all the possible paths using same heuristics of A-Star.
 
 The very first path printed is the DFS path where DFS traversal was done based on the increasing order of alphanumeric strings.
 
