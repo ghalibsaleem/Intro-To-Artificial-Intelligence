@@ -14,12 +14,24 @@ After finding path program will ask to show graph or not
 Requirement: Python 3.7.5 or later 
 ```
 
+#### Libraries for graph and visualisation generation
+
+```
+pip3 install networkx[all]
+```
+* Incase, there is any error, just make sure that you have matplotlib module
+
+```
+pip3 install matplotlib
+```
+
 #### Assignment Structure ####
 
 ```
-Assignment01             // Root Folder
+Assignment02             // Root Folder
 ├── data_handler.py      // File that reads the input files
-├── a_star.py          // File that performs actual A-Star
+├── heuristics           // Folder contatining the main a-star code
+|   └── a_star.py        // File that performs actual A-Star
 ├── helper.py            // File containing helper functions 
 ├── input                // Folder containing input files
 │   ├── connections.txt  // Connect of nodes in the graph
@@ -37,18 +49,21 @@ The script takes in 2 files paths as input:
 
 #### How to run the script ####
 
-1) cd <PATH_TO_DOWNLOAD_FOLDER>/Assignment01
+1) cd <PATH_TO_DOWNLOAD_FOLDER>/Assignment02
 2) python3 main.py input/locations.txt input/connections.txt
 3) When the script runs, its asks user few inputs:
    * First is the starting node for the graph traversal
    * Second is the ending node for the graph traversal
-   * Third is the number of DFS paths that you want to see. If you do not enter this, then you will be shown one path which will be DFS path where DFS traversal was done based on the increasing order of alphanumeric strings.
+   * Third is the comma separated list of cities to be excluded. Leave it blank if you don't want to exclude any cities
+   * If you want step by step solution.
+   * The heuristic around which the path would be generated.
 ```
-NOTE: The two input files containing locations and connections are requied and scripts gices error if they are not provided.
+NOTE: 
+  * After the answer is displayed, you will be prompted to see the graph visualisation. Enter the response accordingly.
+  * The two input files containing locations and connections are requied and scripts gives error if they are not provided.
 ```
 
 #### Output ####
-
 ```
 Enter the start point of the graph: A1
 Enter the end point of the graph: D3
@@ -67,19 +82,10 @@ D4 to D3 length 138.0
 A1 ---> B1 ---> B2 ---> C3 ---> C4 ---> D4 ---> D3
 Total path length: 930.0437931649258
 Do you want show graph? (Yes or No): y
-
 ```
 
-* Line => Path1
-  * Path number
-* Line => A1 -----> A2 : 130.0
-  * This means path from A1 to A2 is of distance 130.0
-  * Similarly rest of the lines.
-* Line => A1 ------ Overall -----> G5 : 3817.435623623003
-  * This line says that the overall distance from node A1 to G5 is 3817.435623623003
-* Line => Total number of paths found: 2486
-  * This line says that to total number of found DFS paths from A1 to G5 are 2486.
-* Line => The Shortest Path among the displayed paths from A1 ------> G5 : 3817.435623623003
-  * This line says that from all the paths that are displayed, what is the distance of the shortest path among them.
-* Line => The overall Shortest Path from A1 ------> G5 : 1217.320939639531
-  * This line says that from all the "2486" DFS that were found, the shortest path among those paths has the distance of 1217.320939639531.
+* First 8 lines are the user prompts and inputs
+* Next 6 lines are the node by node traversal and their length
+* Then the next line displays the whole path of traversal
+* And the line after this displays the total path length
+* The last line is user prompt, where user enters yes or no to see the graph visualisation
