@@ -1,0 +1,8 @@
+swipl -s mammal.pl
+
+
+https://www.isrgrajan.com/the-most-common-diseases-in-india-that-has-influenced-maximum-people.html
+
+
+http://www.yourarticlelibrary.com/diseases/top-13-common-communicable-diseases-found-in-india/34984
+https://timesofindia.indiatimes.com/life-style/health-fitness/health-a-z
