@@ -1,4 +1,4 @@
-swipl -s mammal.pl
+swipl -s diseases.pl
 
 
 https://www.isrgrajan.com/the-most-common-diseases-in-india-that-has-influenced-maximum-people.html

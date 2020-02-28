@@ -8,10 +8,47 @@ diagnose:- symptoms(Disease),
     nl,
     undo.
 
-symptoms(pain):- pain, !.
+/* Diseases to be tested*/
+symptoms(diarrhoea):- diarrhoea, !.
+symptoms(malaria):- malaria, !.
+/*symptoms(hIV_AIDS):- hIV_AIDS, !.
+symptoms(typhoid):- typhoid, !.
+symptoms(diabetes):- diabetes, !.
+symptoms(obesity):- obesity, !.
+symptoms(depression):- depression, !.
+symptoms(breastCancer):- breastCancer, !.
+symptoms(heartDisease):- heartDisease, !.*/
 symptoms(unknown).
 
+/* Diseases Identification rules*/
+diarrhoea :- stomachache,
+    fever,
+    nausea,
+    vomiting,
+    verify(cramping),
+    verify(loose_stool).
+
+malaria:- bodyPain,
+    highFever,
+    vomiting,
+    severeHeadache,
+    verify(sweating).
+
+
+/* classification rules */
 pain :- verify(has_pain).
+stomachache:- pain, verify(stomach_pain).
+fever :- verify(has_fever).
+vomiting:- verify(vomiting).
+nausea:- verify(nausea).
+highFever :- fever,
+    verify(bodyTemp_100_or_more).
+bodyPain:- pain,
+    verify(muscle_and_body_pain).
+headache :- verify(headache).
+severeHeadache:- headache,
+    verify(severe_Headache).
+
 
 
 askSymptoms(Symp):-
@@ -22,8 +59,8 @@ askSymptoms(Symp):-
     nl,
      ( (Response == yes ; Response == y)
         ->
-        assert(yes(Question)) ;
-        assert(no(Question)), fail).
+        assert(yes(Symp)) ;
+        assert(no(Symp)), fail).
 
 
 :- dynamic yes/1,no/1.
