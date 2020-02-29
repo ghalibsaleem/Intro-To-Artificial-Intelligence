@@ -13,9 +13,9 @@ diagnose:- symptoms(Disease),
 symptoms(malaria):- malaria, !.
 symptoms(hIV_AIDS):- hIV_AIDS, !.
 symptoms(typhoid):- typhoid, !.
-symptoms(diabetes):- diabetes, !.
-symptoms(obesity):- obesity, !.
 symptoms(diarrhoea):- diarrhoea, !.
+symptoms(diabetes):- diabetes, !.
+symptoms(dehydration):- dehydration, !.
 symptoms(imbalance_blood_pressure):- imbalance_blood_pressure, !.
 symptoms(depression):- depression, !.
 symptoms(breastCancer):- breastCancer, !.
@@ -23,20 +23,32 @@ symptoms(heartDisease):- heartDisease, !.
 symptoms(unknown).
 
 /* Diseases Identification rules*/
-diarrhoea :- stomachache,
+diarrhoea :- 
+    stomach_ache,
     fever,
     nausea,
     vomiting,
-    verify(cramping),
+    verify(abdominal_cramping),
+    verify(urgent_need_to_have_a_bowel_movement),
     verify(loose_stool).
 
-malaria:- body_musclePain,
-    highFever,
-    vomiting,
-    severeHeadache,
-    verify(sweating).
+dehydration :-
+    fatigue,
+    verify(extreme_thirst),
+    verify(less_frequent_urination),
+    verify(dark_colored_urine),
+    dizziness.
 
-hIV_AIDS:- muslJointPain,
+malaria:- 
+    body_muscle_pain,
+    high_fever,
+    vomiting,
+    fatigue,
+    severe_headache,
+    verify(chills).
+
+hIV_AIDS:- 
+    muscle_joint_pain,
     fever,
     headache,
     diarrhoea,
@@ -46,87 +58,122 @@ hIV_AIDS:- muslJointPain,
     verify(weight_loss),
     verify(oral_yeast_infection).
 
-typhoid:- typhoidFever,
+typhoid:- 
+    typhoid_fever,
     headache,
-    musclePain,
+    muscle_pain,
     diarrhoea,
-    weekness_fatigue,
-    verify(dry_cough).
+    weakness_fatigue,
+    verify(dry_cough),
+    verify(sweating).
 
 diabetes:- verify(frequent_urination),
     verify(hunger),
     verify(thirsty_than_usual),
-    blurredVision,
+    blurred_vision,
     verify(skin_itching).
 
-obesity:- verify(high_BMI),
-    verify(extra_fat_around_areas_such_as_arms_waist_calves_thighs),
-    breathlessness,
-    verify(snoring).
-
 imbalance_blood_pressure:- severeHeadache,
-    blurredVision,
+    blurred_vision,
     chestPain,
     breathlessness,
     nausea,
     vomiting,
-    verify(dizzyness).
+    dizzyness.
 
-depression:- verify(selfloathing),
+depression:- 
+    verify(selfloathing),
     verify(angry_and_sullen),
     verify(anxiety),
     verify(lack_of_interest),
     verify(laziness),
     verify(change_in_sleeping_Habits).
 
-breastCancer:- verify(gender_female),
-    verify(breast_or_nipple_pain),
-    verify(formation_of_lumps_near_nipple_area_or_underarms),
-    verify(swelling_in_the_armpit),
-    verify(change_the_overall_size_or_texture_of_the_nipple),
-    verify(nipple_discharge).
-
-heartDisease:- breathlessness,
+heartDisease:- 
+    breathlessness,
     weekness_fatigue,
     verify(fast_heartbeat),
     verify(heartburn),
     verify(pressure_or_heaviness_in_chest_and_arm).
 
 
-
-
 /* classification rules */
-fever :- verify(has_fever).
-highFever :- fever,
-    verify(bodyTemp_102_or_more).
-typhoidFever:- highFever,
-    verify(started_slowly_then_inceresed_severely).
+fever :-
+    verify(has_fever).
 
-vomiting:- verify(vomiting).
-nausea:- verify(nausea).
+high_fever :-
+    fever,
+    verify(body_temp_102_or_more).
 
-fatigue:verify(fatigue).
-weekness_fatigue:- fatigue,
-    verify(weekness).
+typhoid_fever:-
+    high_fever,
+    verify(fever_started_slowly_then_increased_severely).
 
-pain :- verify(has_pain).
-stomachache:- pain, verify(stomach_pain).
-bodyPain:- pain,
+vomiting :-
+    verify(vomiting).
+
+nausea :-
+    verify(nausea).
+
+fatigue :-
+    verify(fatigue).
+
+weakness_fatigue :-
+    fatigue,
+    verify(weakness).
+
+pain :-
+    verify(have_pain).
+
+stomach_ache :-
+    pain,
+    verify(stomach_pain).
+
+body_pain :-
+    pain,
     verify(body_pain).
-musclePain:- pain,
-    verify(muscle_pain).
-jointPain:- pain,
-    verify(joint_pain).
-chestPain:-pain,
-    verify(chest_pain).
-body_musclePain:-bodyPain,muscle_pain.
-muslJointPain :- musclePain,jointPain.
-headache :- verify(headache).
-severeHeadache:- headache,
-    verify(severe_Headache).
 
-blurredVision:- verify(blurred_vision).
-breathlessness:-verify(breathlessness).
+muscle_pain :-
+    pain,
+    verify(muscle_pain).
+
+joint_pain :-
+    pain,
+    verify(joint_pain).
+
+chest_pain :-
+    pain,
+    verify(chest_pain).
+
+body_muscle_pain :-
+    body_pain,
+    muscle_pain.
+
+muscle_joint_pain :-
+    muscle_pain,
+    joint_pain.
+
+headache :-
+    verify(headache).
+
+severe_headache :-
+    headache,
+    verify(severe_headache).
+
+blurred_vision :-
+    verify(blurred_vision).
+
+breathlessness :-
+    verify(breathlessness).
+
+dizzyness:-
+    verify(dizziness).
+
+obesity :-
+    breathlessness,
+    verify(high_bmi),
+    verify(extra_fat_around_areas_such_as_arms_waist_calves_thighs),
+    verify(snoring).
 
 
 askSymptoms(Symp):-
@@ -142,7 +189,11 @@ askSymptoms(Symp):-
 
 
 :- dynamic yes/1,no/1.
-verify(Rule):-(yes(Rule)->true;(no(Rule)->fail;askSymptoms(Rule))).
+
+verify(Rule):-(
+    yes(Rule)->true;
+    (no(Rule)->fail;
+    askSymptoms(Rule))).
 
 
 undo :- retract(yes(_)),fail. 
