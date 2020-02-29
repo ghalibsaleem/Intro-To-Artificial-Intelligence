@@ -9,12 +9,13 @@ diagnose:- symptoms(Disease),
     undo.
 
 /* Diseases to be tested*/
-symptoms(diarrhoea):- diarrhoea, !.
+
 symptoms(malaria):- malaria, !.
 symptoms(hIV_AIDS):- hIV_AIDS, !.
 symptoms(typhoid):- typhoid, !.
 symptoms(diabetes):- diabetes, !.
 symptoms(obesity):- obesity, !.
+symptoms(diarrhoea):- diarrhoea, !.
 symptoms(imbalance_blood_pressure):- imbalance_blood_pressure, !.
 symptoms(depression):- depression, !.
 symptoms(breastCancer):- breastCancer, !.
