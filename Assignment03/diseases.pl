@@ -9,11 +9,11 @@ diagnose:- symptoms(Disease),
     undo.
 
 /* Diseases to be tested*/
-
 symptoms(malaria):- malaria, !.
 symptoms(hIV_AIDS):- hIV_AIDS, !.
 symptoms(typhoid):- typhoid, !.
 symptoms(diarrhoea):- diarrhoea, !.
+symptoms(arthritis):- arthritis, !.
 symptoms(diabetes):- diabetes, !.
 symptoms(dehydration):- dehydration, !.
 symptoms(imbalance_blood_pressure):- imbalance_blood_pressure, !.
@@ -23,21 +23,6 @@ symptoms(heartDisease):- heartDisease, !.
 symptoms(unknown).
 
 /* Diseases Identification rules*/
-diarrhoea :- 
-    stomach_ache,
-    fever,
-    nausea,
-    vomiting,
-    verify(abdominal_cramping),
-    verify(urgent_need_to_have_a_bowel_movement),
-    verify(loose_stool).
-
-dehydration :-
-    fatigue,
-    verify(extreme_thirst),
-    verify(less_frequent_urination),
-    verify(dark_colored_urine),
-    dizziness.
 
 malaria:- 
     body_muscle_pain,
@@ -53,25 +38,47 @@ hIV_AIDS:-
     headache,
     diarrhoea,
     fatigue,
-    verify(sore_throat),
-    verify(swollen_lymph_glands),
-    verify(weight_loss),
-    verify(oral_yeast_infection).
+    verify("Sore throat"),
+    verify("Swollen lymph glands"),
+    verify("Weight loss"),
+    verify("Oral yeast infection").
 
-typhoid:- 
+typhoid:-
+    muscle_pain,
     typhoid_fever,
     headache,
-    muscle_pain,
     diarrhoea,
     weakness_fatigue,
-    verify(dry_cough),
+    verify("Dry cough"),
     verify(sweating).
 
-diabetes:- verify(frequent_urination),
+diarrhoea :- 
+    stomach_ache,
+    fever,
+    nausea,
+    vomiting,
+    verify("Abdominal cramping"),
+    verify("Urgent need to have a bowel movement"),
+    verify("Loose stool").
+
+arthritis:-
+    joint_pain,
+    verify("Joint Stiffness"),
+    verify("Joint Swelling"),
+    verify("Decreased range of motion").
+
+diabetes:- verify("Frequent urination"),
     verify(hunger),
-    verify(thirsty_than_usual),
+    verify("Thirsty than usual"),
     blurred_vision,
-    verify(skin_itching).
+    verify("Skin itching").
+
+dehydration :-
+    fatigue,
+    verify("Extreme thirst"),
+    verify("Less frequent_urination"),
+    verify("dark colored urine"),
+    dizziness.
 
 imbalance_blood_pressure:- severeHeadache,
     blurred_vision,
@@ -83,31 +90,31 @@ imbalance_blood_pressure:- severeHeadache,
 
 depression:- 
     verify(selfloathing),
-    verify(angry_and_sullen),
+    verify("Angry and sullen"),
     verify(anxiety),
-    verify(lack_of_interest),
+    verify("Lack of interest"),
     verify(laziness),
-    verify(change_in_sleeping_Habits).
+    verify("Change in sleeping Habits").
 
 heartDisease:- 
     breathlessness,
     weekness_fatigue,
-    verify(fast_heartbeat),
+    verify("Fast heartbeat"),
     verify(heartburn),
-    verify(pressure_or_heaviness_in_chest_and_arm).
+    verify("Pressure or heaviness in chest and arm").
 
 
 /* classification rules */
 fever :-
-    verify(has_fever).
+    verify("Has fever").
 
 high_fever :-
     fever,
-    verify(body_temp_102_or_more).
+    verify("Body temp 102 or more").
 
 typhoid_fever:-
     high_fever,
-    verify(fever_started_slowly_then_increased_severely).
+    verify("Fever started slowly then increased severely").
 
 vomiting :-
     verify(vomiting).
@@ -123,27 +130,27 @@ weakness_fatigue :-
     verify(weakness).
 
 pain :-
-    verify(have_pain).
+    verify("Have pain").
 
 stomach_ache :-
     pain,
-    verify(stomach_pain).
+    verify("Stomach pain").
 
 body_pain :-
     pain,
-    verify(body_pain).
+    verify("Body pain").
 
 muscle_pain :-
     pain,
-    verify(muscle_pain).
+    verify("Muscle pain").
 
 joint_pain :-
     pain,
-    verify(joint_pain).
+    verify("Joint pain").
 
 chest_pain :-
     pain,
-    verify(chest_pain).
+    verify("Chest pain").
 
 body_muscle_pain :-
     body_pain,
@@ -158,10 +165,10 @@ headache :-
 
 severe_headache :-
     headache,
-    verify(severe_headache).
+    verify("Severe headache").
 
 blurred_vision :-
-    verify(blurred_vision).
+    verify("Blurred vision").
 
 breathlessness :-
     verify(breathlessness).
@@ -171,8 +178,8 @@ dizzyness:-
 
 obesity :-
     breathlessness,
-    verify(high_bmi),
-    verify(extra_fat_around_areas_such_as_arms_waist_calves_thighs),
+    verify("High BMI"),
+    verify("Extra fat around areas such as arms, waist, calves and thighs"),
     verify(snoring).
 
 
