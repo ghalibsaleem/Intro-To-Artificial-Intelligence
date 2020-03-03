@@ -12,6 +12,7 @@ diagnose:- symptoms(Disease),
 symptoms(malaria):- malaria, !.
 symptoms(hIV_AIDS):- hIV_AIDS, !.
 symptoms(typhoid):- typhoid, !.
+symptoms(cholera):- cholera, !.
 symptoms(diarrhoea):- diarrhoea, !.
 symptoms(arthritis):- arthritis, !.
 symptoms(diabetes):- diabetes, !.
@@ -51,6 +52,10 @@ typhoid:-
     weakness_fatigue,
     verify("Dry cough"),
     verify(sweating).
+
+cholera:-
+    diarrhoea,
+    dehydration.
 
 diarrhoea :- 
     stomach_ache,
