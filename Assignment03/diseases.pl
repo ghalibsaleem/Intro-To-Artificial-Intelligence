@@ -1,5 +1,5 @@
 /*
-This is a common disease prediction system. It will ask for basic symptom like do youo have pain? and where?
+This is a common disease prediction system. It will ask for basic symptom like do you have pain? and where?
 and with the help of these symptoms it will predict the disease. We can expand the knowledge of this program
 so that it can predict more disease. We can also add prescription according to the disease or doctor recomendation
 like you need general physician or orthopedics etc.
