@@ -1,21 +1,26 @@
 /*
-This is a common disease prediction system. It will ask for basic symptom like do you have pain? and where?
+This is a disease prediction system. It will ask for basic symptom like do you have pain? and where is the pain? etc.
 and with the help of these symptoms it will predict the disease. We can expand the knowledge of this program
-so that it can predict more disease. We can also add prescription according to the disease or doctor recomendation
+so that it can predict more disease. We can also add prescription according to the disease or doctor recommendation
 like you need general physician or orthopedics etc.
 
-*************To start your diagnosis run command "diagnose.".**********
+************* To start your diagnosis run command "diagnose.". **********
 
 Created by:-
     1) Ghalib Saleem : U03151409
     2) Divyanshu Gupta : U21369422
 */
 
-diagnose:- symptoms(Disease),
-    write("There might be a possibility that you are suffering from: "),
-    write(Disease),
+diagnose:-
+    symptoms(Disease),
+    (Disease == unknown
+    ->
+        write("Sorry! unable to detect the disease.")
+    ;
+        write("There might be a possibility that you are suffering from: "),
+        write(Disease)),
     nl,
-    write("Note: It is advidsed to consult with a doctor for further dignosis and prescription."),
+    write("Note: It is advised to consult with a doctor for further diagnosis and prescription."),
     nl,
     undo.
 
@@ -30,8 +35,7 @@ symptoms(diabetes):- diabetes, !.
 symptoms(dehydration):- dehydration, !.
 symptoms(imbalance_blood_pressure):- imbalance_blood_pressure, !.
 symptoms(depression):- depression, !.
-symptoms(breastCancer):- breastCancer, !.
-symptoms(heartDisease):- heartDisease, !.
+symptoms(heart_disease):- heart_disease, !.
 symptoms(unknown).
 
 /* Diseases Identification rules*/
@@ -91,17 +95,18 @@ diabetes:- verify("Frequent urination"),
 dehydration :-
     fatigue,
     verify("Extreme thirst"),
-    verify("Less frequent_urination"),
+    verify("Less frequent urination"),
     verify("dark colored urine"),
     dizziness.
 
-imbalance_blood_pressure:- severeHeadache,
+imbalance_blood_pressure:-
+    severe_headache,
     blurred_vision,
     chestPain,
     breathlessness,
     nausea,
     vomiting,
-    dizzyness.
+    dizziness.
 
 depression:- 
     verify(selfloathing),
@@ -109,12 +114,12 @@ depression:-
     verify(anxiety),
     verify("Lack of interest"),
     verify(laziness),
-    verify("Change in sleeping Habits").
+    verify("Change in sleeping habits").
 
-heartDisease:- 
+heart_disease:-
     breathlessness,
-    weekness_fatigue,
-    verify("Fast heartbeat"),
+    weakness_fatigue,
+    verify("Fast heart beat"),
     verify(heartburn),
     verify("Pressure or heaviness in chest and arm").
 
@@ -188,7 +193,7 @@ blurred_vision :-
 breathlessness :-
     verify(breathlessness).
 
-dizzyness:-
+dizziness :-
     verify(dizziness).
 
 obesity :-
@@ -198,26 +203,26 @@ obesity :-
     verify(snoring).
 
 
-askSymptoms(Symp):-
+ask_symptoms(Symptom) :-
     write("Do you have this symptom: "),
-    write(Symp),
+    write(Symptom),
     write("?"),
     read(Response),
     nl,
-     ( (Response == yes ; Response == y)
-        ->
-        assert(yes(Symp)) ;
-        assert(no(Symp)), fail).
+     ((Response == yes ; Response == y)
+       ->
+       assert(yes(Symptom)) ;
+       assert(no(Symptom)), fail).
 
 
 :- dynamic yes/1,no/1.
 
-verify(Rule):-(
-    yes(Rule)->true;
-    (no(Rule)->fail;
-    askSymptoms(Rule))).
+verify(Rule) :-
+    (yes(Rule) -> true;
+    (no(Rule) -> fail;
+    ask_symptoms(Rule))).
 
 
-undo :- retract(yes(_)),fail. 
-undo :- retract(no(_)),fail.
+undo :- retract(yes(_)), fail.
+undo :- retract(no(_)), fail.
 undo.
