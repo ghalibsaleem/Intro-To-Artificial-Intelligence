@@ -32,6 +32,8 @@
        then yes 
        else no))
 
+
+
 ;;****************
 ;;* DEFFUNCTIONS *
 ;;****************
@@ -70,11 +72,11 @@
 	(role concrete)
 	(slot dname))
 
-
-;Rules
-
+;;;;;;;;;
+;;Rules
+;;;;;;;;;
 (defrule person-check "Person Data"
-    (declare (salience 51))
+    ;(declare (salience 51))
     ?ins <- (object (is-a PERSON))
 	=>
 	(send ?ins put-gender (ask-question "What is you gender? (male female)? " male female)))
@@ -88,11 +90,12 @@
      (test (eq ?sev yes))
      (test (eq ?isvom yes))
      (test (eq ?isfatig yes))
+     (chills yes)
      =>
      (send ?ins put-dname "Maleria"))
 
 (defrule fever-check "Check Fever"
-    ;(declare (salience 50))
+   
     ?ins <- (object (is-a FEVER))
 	=>
 	(send ?ins put-isfever (yes-or-no-p "Do you have a fever (yes no)? ")))
@@ -146,8 +149,16 @@
     (send ?ins put-isweekness (yes-or-no-p "Do you have weekness problem (yes no)? "))
     (send ?ins put-isdizziness (yes-or-no-p "Do you have dizziness problem (yes no)? ")))
 
+(defrule check-chills ""
+    (not (repair ?))
+    =>
+    (assert (chills
+              (yes-or-no-p "Do you have chills symptom (yes/no)? "))))
 
 
+;;*******************
+;;Instance Creation
+;;*******************
 (definstances DISEASE-INSTANCES
     (disease of DISEASE))
 
@@ -157,6 +168,11 @@
 (definstances PERSON-INSTANCES
     (person of PERSON))
 
+
+
+;;*******************
+;;Program begins
+;;*******************
 (defrule prog-begin "Program Begin"
     (declare (salience 60))
     (object (is-a DISEASE) (dname ?dis_name))
