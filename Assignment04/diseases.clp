@@ -118,7 +118,7 @@
 (defrule typhoid "Typhoid"
      ;(declare (salience 52))
      ?ins <- (object (is-a DISEASE) (istyphiodfever ?hf) (location ?loc) (isheadache ?sev))
-     ?miscins <- (object (is-a MISC) (isdiarrhoea ?isvom) (isfatigue ?isfatig) (isweekness ?isweek))
+     ?miscins <- (object (is-a MISC) (isfatigue ?isfatig) (isweekness ?isweek))
      ?tempdis <- (object (is-a INTERMEDIATE-DISEASE) (dname ?disname))
      (test (eq ?loc muscle))
      (test (eq ?hf yes))
@@ -151,7 +151,31 @@
      =>
      (send ?ins put-dname "Arthritis"))
 
+(defrule diabetes "Diabetes"
+     ;(declare (salience 52))
+     ?ins <- (object (is-a DISEASE))
+     ?miscins <- (object (is-a MISC) (isblurred_vision ?isblurr))
+     (test (eq ?isblurr yes))
+     (frequent-urination yes)
+     (hunger yes)
+     (thirsty-than-usual yes)
+     (skin-itching yes)
+     =>
+     (send ?ins put-dname "Diabetes"))
 
+(defrule imbalance-blood-pressure "Imbalance Blood Pressure"
+     ;(declare (salience 52))
+     ?ins <- (object (is-a DISEASE) (location ?loc) (severity ?sev))
+     ?miscins <- (object (is-a MISC) (isvomiting ?isvom) (isnausea ?isnausea) (isblurred_vision ?isblurr) (isbreathlessness ?isbreath) (isdizziness ?isdizz))
+     (test (eq ?loc chest))
+     (test (eq ?sev yes))
+     (test (eq ?isvom yes))
+     (test (eq ?isnausea yes))
+     (test (eq ?isblurr yes))
+     (test (eq ?isbreath yes))
+     (test (eq ?isdizz yes))
+     =>
+     (send ?ins put-dname "Imbalance Blood Pressure"))
 
 
 (defrule fever-check "Check Fever"
@@ -209,65 +233,89 @@
     (send ?ins put-isdizziness (yes-or-no-p "Do you have dizziness problem (yes no)? ")))
 
 (defrule check-chills ""
-    (not (repair ?))
+    (not (chills ?))
     =>
     (assert (chills
               (yes-or-no-p "Do you have chills symptom (yes/no)? "))))
 
 (defrule check-sore-throat ""
-    (not (repair ?))
+    (not (sore-throat ?))
     =>
     (assert (sore-throat
               (yes-or-no-p "Do you have Sore throat symptom (yes/no)? "))))
 
 (defrule check-swollen-lymph-glands ""
-    (not (repair ?))
+    (not (swollen-lymph-glands ?))
     =>
     (assert (swollen-lymph-glands
               (yes-or-no-p "Do you have swollen lymph glands symptom (yes/no)? "))))
 
 (defrule check-weight-loss ""
-    (not (repair ?))
+    (not (weight-loss ?))
     =>
     (assert (weight-loss
               (yes-or-no-p "Do you have weight loss symptom (yes/no)? "))))
 
 (defrule check-dry-cough ""
-    (not (repair ?))
+    (not (dry-cough ?))
     =>
     (assert (dry-cough
               (yes-or-no-p "Do you have dry cough symptom (yes/no)? "))))
 
 (defrule check-sweating ""
-    (not (repair ?))
+    (not (sweating ?))
     =>
     (assert (sweating
               (yes-or-no-p "Do you have sweating symptom (yes/no)? "))))
 
 (defrule check-dehydration ""
-    (not (repair ?))
+    (not (dehydration ?))
     =>
     (assert (dehydration
               (yes-or-no-p "Do you have dehydration symptom (yes/no)? "))))
 
 
 (defrule check-joint-stiffness ""
-    (not (repair ?))
+    (not (joint-stiffness ?))
     =>
     (assert (joint-stiffness
               (yes-or-no-p "Do you have joint stiffness symptom (yes/no)? "))))
 
 (defrule check-joint-swelling ""
-    (not (repair ?))
+    (not (joint-swelling ?))
     =>
     (assert (joint-swelling
               (yes-or-no-p "Do you have joint-swelling symptom (yes/no)? "))))
 
 (defrule check-low-range-ofmotion ""
-    (not (repair ?))
+    (not (low-range-ofmotion ?))
     =>
     (assert (low-range-ofmotion
               (yes-or-no-p "Do you have low range of motion symptom (yes/no)? "))))
+
+(defrule check-frequent-urination ""
+    (not (frequent-urination ?))
+    =>
+    (assert (frequent-urination
+              (yes-or-no-p "Do you have frequent-urination symptom (yes/no)? "))))
+
+(defrule check-hunger ""
+    (not (hunger ?))
+    =>
+    (assert (hunger
+              (yes-or-no-p "Do you have hunger symptom (yes/no)? "))))
+
+(defrule check-thirsty-than-usual ""
+    (not (thirsty-than-usual ?))
+    =>
+    (assert (thirsty-than-usual
+              (yes-or-no-p "Do you have thirsty-than-usual symptom (yes/no)? "))))
+
+(defrule check-skin-itching ""
+    (not (skin-itching ?))
+    =>
+    (assert (skin-itching
+              (yes-or-no-p "Do you have skin-itching symptom (yes/no)? "))))
 
 ;;*******************
 ;;Instance Creation
