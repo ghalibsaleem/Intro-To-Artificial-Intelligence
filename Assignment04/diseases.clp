@@ -84,7 +84,8 @@
     ;(declare (salience 51))
     ?ins <- (object (is-a PERSON))
 	=>
-	(send ?ins put-gender (ask-question "What is you gender? (male female)? " male female)))
+	(send ?ins put-gender (ask-question "What is you gender? (male female)? " male female))
+    (send ?ins put-age (ask-question "What is your age group? (child adult)? " child adult)))
 
 (defrule maleria "Maleria"
      ;(declare (salience 52))
@@ -410,7 +411,7 @@
     (intdisease of INTERMEDIATE-DISEASE))
 
 ;;**********************
-;;Program begins and end
+;;Program begins
 ;;**********************
 (defrule prog-begin "Program Begin"
     (declare (salience 60))
@@ -421,13 +422,41 @@
 
 
 
-(defrule set-pdoctor "set prescribed doctor"
+;;**********************
+;;working on doctor
+;;**********************
+(defrule set-pediatrician "set prescribed doctor to Pediatrician"
     (declare (salience 60))
     ?ins <- (object (is-a DISEASE) (dname ?dis_name))
+    (object (is-a PERSON) (age ?age))
     (test (neq ?dis_name nil))
+    (test (eq ?age child))
 	=>
-	(send ?ins put-pdoctor "DOc"))
+	(send ?ins put-pdoctor "Pediatrician"))
 
+(defrule set-cardiologist "set prescribed doctor to Cardiologist"
+    (declare (salience 60))
+    ?ins <- (object (is-a DISEASE) (dname ?dis_name))
+    (object (is-a PERSON) (age ?age))
+    (test (neq ?dis_name nil))
+    (test (eq ?age adult))
+    (test (eq ?dis_name "Heart Disease"))
+	=>
+	(send ?ins put-pdoctor "Cardiologist"))
+
+(defrule set-physician "set prescribed doctor to physician"
+    (declare (salience 60))
+    ?ins <- (object (is-a DISEASE) (dname ?dis_name))
+    (object (is-a PERSON) (age ?age))
+    (test (neq ?dis_name nil))
+    (test (eq ?age adult))
+	=>
+	(send ?ins put-pdoctor "General Physician"))
+
+
+;;**********************
+;;Program End
+;;**********************
 (defrule prescribed-doc "Prescribed Doctor"
     (declare (salience 60))
     (object (is-a DISEASE) (pdoctor ?pdoctor))
