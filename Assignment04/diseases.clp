@@ -177,6 +177,18 @@
      =>
      (send ?ins put-dname "Imbalance Blood Pressure"))
 
+(defrule heart-disease "Heart Disease"
+     ;(declare (salience 52))
+     ?ins <- (object (is-a DISEASE))
+     ?miscins <- (object (is-a MISC) (isweekness ?isweek) (isfatigue ?isfatig) (isbreathlessness ?isbreath))
+     (test (eq ?isweek yes))
+     (test (eq ?isbreath yes))
+     (test (eq ?isfatig yes))
+     (heart-burn yes)
+     (fast-heart-beat yes)
+     =>
+     (send ?ins put-dname "Heart Disease"))
+
 
 (defrule fever-check "Check Fever"
     ?ins <- (object (is-a FEVER))
@@ -316,6 +328,18 @@
     =>
     (assert (skin-itching
               (yes-or-no-p "Do you have skin-itching symptom (yes/no)? "))))
+
+(defrule check-heart-burn ""
+    (not (heart-burn ?))
+    =>
+    (assert (heart-burn
+              (yes-or-no-p "Do you have heart-burn symptom (yes/no)? "))))
+
+(defrule check-fast-heart-beat ""
+    (not (fast-heart-beat ?))
+    =>
+    (assert (fast-heart-beat
+              (yes-or-no-p "Do you have fast heart beat symptom (yes/no)? "))))
 
 ;;*******************
 ;;Instance Creation
