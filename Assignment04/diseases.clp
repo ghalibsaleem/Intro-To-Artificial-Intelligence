@@ -70,7 +70,8 @@
 
 (defclass DISEASE (is-a SYMPTOMS)
 	(role concrete)
-	(slot dname))
+	(slot dname)
+    (slot pdoctor))
 
 (defclass INTERMEDIATE-DISEASE (is-a USER)
     (role concrete)
@@ -97,6 +98,22 @@
      (chills yes)
      =>
      (send ?ins put-dname "Maleria"))
+
+
+(defrule intdiarrhoea "Intermediate Diarrhoea"
+     ;(declare (salience 52))
+     ?ins <- (object (is-a DISEASE) (isfever ?hf) (location ?loc))
+     ?miscins <- (object (is-a MISC) (isvomiting ?isvom) (isnausea ?isnausea) (isfatigue ?isfatig))
+     ?tempdis <- (object (is-a INTERMEDIATE-DISEASE) (dname ?disname))
+     (test (eq ?loc stomach))
+     (test (eq ?hf yes))
+     (test (eq ?isvom yes))
+     (test (eq ?isnausea yes))
+     (loose-stool yes)
+     (bowel-movement yes)
+     (abdominal-cramping yes)
+     =>
+     (send ?tempdis put-dname "Diarrhoea"))
 
 (defrule hiv-aids "HIV AIDS"
      ;(declare (salience 52))
@@ -140,6 +157,22 @@
      (dehydration yes)
      =>
      (send ?ins put-dname "Cholera"))
+
+(defrule diarrhoea "Diarrhoea"
+     ;(declare (salience 52))
+     ?ins <- (object (is-a DISEASE))
+     (object (is-a INTERMEDIATE-DISEASE) (dname ?disname))
+     (test (eq ?disname diarrhoea))
+     =>
+     (send ?ins put-dname "Diarrhoea"))
+
+(defrule viral-fever "Viral Fever"
+     ;(declare (salience 52))
+     ?ins <- (object (is-a DISEASE) (isfever ?fev) (location ?loc))
+     (test (eq ?fev yes))
+     (test (eq ?loc body-muscle))
+     =>
+     (send ?ins put-dname "Viral Fever"))
 
 (defrule arthritis "Arthritis"
      ;(declare (salience 52))
@@ -341,6 +374,26 @@
     (assert (fast-heart-beat
               (yes-or-no-p "Do you have fast heart beat symptom (yes/no)? "))))
 
+(defrule check-loose-stool ""
+    (not (loose-stool ?))
+    =>
+    (assert (loose-stool
+              (yes-or-no-p "Do you have loose-stool symptom (yes/no)? "))))
+
+(defrule check-bowel-movement ""
+    (not (bowel-movement ?))
+    =>
+    (assert (bowel-movement
+              (yes-or-no-p "Do you have urgent need to bowel-movement symptom (yes/no)? "))))
+
+(defrule check-abdominal-cramping ""
+    (not (abdominal-cramping ?))
+    =>
+    (assert (abdominal-cramping
+              (yes-or-no-p "Do you have abdominal cramping symptom (yes/no)? "))))
+
+
+
 ;;*******************
 ;;Instance Creation
 ;;*******************
@@ -353,15 +406,32 @@
 (definstances PERSON-INSTANCES
     (person of PERSON))
 
+(definstances INTERMEDIATE-DISEASE-INSTANCES
+    (intdisease of INTERMEDIATE-DISEASE))
 
-
-;;*******************
-;;Program begins
-;;*******************
+;;**********************
+;;Program begins and end
+;;**********************
 (defrule prog-begin "Program Begin"
     (declare (salience 60))
     (object (is-a DISEASE) (dname ?dis_name))
     (test (neq ?dis_name nil))
 	=>
-	(printout t ?dis_name " is the disease" crlf)
-   (halt))
+	(printout t "The predicted Disease is : " ?dis_name crlf))
+
+
+
+(defrule set-pdoctor "set prescribed doctor"
+    (declare (salience 60))
+    ?ins <- (object (is-a DISEASE) (dname ?dis_name))
+    (test (neq ?dis_name nil))
+	=>
+	(send ?ins put-pdoctor "DOc"))
+
+(defrule prescribed-doc "Prescribed Doctor"
+    (declare (salience 60))
+    (object (is-a DISEASE) (pdoctor ?pdoctor))
+    (test (neq ?pdoctor nil))
+    =>
+    (printout t "The prescribed doctor: " ?pdoctor crlf)
+    (halt))
