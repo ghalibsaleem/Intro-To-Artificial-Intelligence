@@ -75,7 +75,8 @@
 
 (defclass INTERMEDIATE-DISEASE (is-a USER)
     (role concrete)
-	(slot dname))
+    (slot stomachpain)
+	(slot tname))
 
 ;;;;;;;;;
 ;;Rules
@@ -87,147 +88,6 @@
 	(send ?ins put-gender (ask-question "What is you gender? (male female)? " male female))
     (send ?ins put-age (ask-question "What is your age group? (child adult)? " child adult)))
 
-(defrule maleria "Maleria"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE) (ishighfever ?hf) (location ?loc) (severity ?sev))
-     ?miscins <- (object (is-a MISC) (isvomiting ?isvom) (isfatigue ?isfatig))
-     (test (eq ?loc body-muscle))
-     (test (eq ?hf yes))
-     (test (eq ?sev yes))
-     (test (eq ?isvom yes))
-     (test (eq ?isfatig yes))
-     (chills yes)
-     =>
-     (send ?ins put-dname "Maleria"))
-
-
-(defrule intdiarrhoea "Intermediate Diarrhoea"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE) (isfever ?hf) (location ?loc))
-     ?miscins <- (object (is-a MISC) (isvomiting ?isvom) (isnausea ?isnausea) (isfatigue ?isfatig))
-     ?tempdis <- (object (is-a INTERMEDIATE-DISEASE) (dname ?disname))
-     (test (eq ?loc stomach))
-     (test (eq ?hf yes))
-     (test (eq ?isvom yes))
-     (test (eq ?isnausea yes))
-     (loose-stool yes)
-     (bowel-movement yes)
-     (abdominal-cramping yes)
-     =>
-     (send ?tempdis put-dname "Diarrhoea"))
-
-(defrule hiv-aids "HIV AIDS"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE) (isfever ?hf) (location ?loc) (isheadache ?sev))
-     ?miscins <- (object (is-a MISC) (isfatigue ?isfatig))
-     ?tempdis <- (object (is-a INTERMEDIATE-DISEASE) (dname ?disname))
-     (test (eq ?loc muscle-joint))
-     (test (eq ?hf yes))
-     (test (eq ?sev yes))
-     (test (eq ?disname diarrhoea))
-     (test (eq ?isfatig yes))
-     (sore-throat yes)
-     (swollen-lymph-glands yes)
-     (weight-loss yes)
-     =>
-     (send ?ins put-dname "HIV AIDS"))
-
-
-(defrule typhoid "Typhoid"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE) (istyphiodfever ?hf) (location ?loc) (isheadache ?sev))
-     ?miscins <- (object (is-a MISC) (isfatigue ?isfatig) (isweekness ?isweek))
-     ?tempdis <- (object (is-a INTERMEDIATE-DISEASE) (dname ?disname))
-     (test (eq ?loc muscle))
-     (test (eq ?hf yes))
-     (test (eq ?sev yes))
-     (test (eq ?disname diarrhoea))
-     (test (eq ?isfatig yes))
-     (test (eq ?isweek yes))
-     (dry-cough yes)
-     (sweating yes)
-     =>
-     (send ?ins put-dname "Typhoid"))
-
-
-(defrule cholera "Cholera"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE))
-     (object (is-a INTERMEDIATE-DISEASE) (dname ?disname))
-     (test (eq ?disname diarrhoea))
-     (dehydration yes)
-     =>
-     (send ?ins put-dname "Cholera"))
-
-(defrule diarrhoea "Diarrhoea"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE))
-     (object (is-a INTERMEDIATE-DISEASE) (dname ?disname))
-     (test (eq ?disname diarrhoea))
-     =>
-     (send ?ins put-dname "Diarrhoea"))
-
-(defrule viral-fever "Viral Fever"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE) (isfever ?fev) (location ?loc))
-     (test (eq ?fev yes))
-     (test (eq ?loc body-muscle))
-     =>
-     (send ?ins put-dname "Viral Fever"))
-
-(defrule arthritis "Arthritis"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE) (location ?loc))
-     (test (eq ?loc joint))
-     (joint-stiffness yes)
-     (joint-swelling yes)
-     (low-range-ofmotion yes)
-     =>
-     (send ?ins put-dname "Arthritis"))
-
-(defrule diabetes "Diabetes"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE))
-     ?miscins <- (object (is-a MISC) (isblurred_vision ?isblurr))
-     (test (eq ?isblurr yes))
-     (frequent-urination yes)
-     (hunger yes)
-     (thirsty-than-usual yes)
-     (skin-itching yes)
-     =>
-     (send ?ins put-dname "Diabetes"))
-
-(defrule imbalance-blood-pressure "Imbalance Blood Pressure"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE) (location ?loc) (severity ?sev))
-     ?miscins <- (object (is-a MISC) (isvomiting ?isvom) (isnausea ?isnausea) (isblurred_vision ?isblurr) (isbreathlessness ?isbreath) (isdizziness ?isdizz))
-     (test (eq ?loc chest))
-     (test (eq ?sev yes))
-     (test (eq ?isvom yes))
-     (test (eq ?isnausea yes))
-     (test (eq ?isblurr yes))
-     (test (eq ?isbreath yes))
-     (test (eq ?isdizz yes))
-     =>
-     (send ?ins put-dname "Imbalance Blood Pressure"))
-
-(defrule heart-disease "Heart Disease"
-     ;(declare (salience 52))
-     ?ins <- (object (is-a DISEASE))
-     ?miscins <- (object (is-a MISC) (isweekness ?isweek) (isfatigue ?isfatig) (isbreathlessness ?isbreath))
-     (test (eq ?isweek yes))
-     (test (eq ?isbreath yes))
-     (test (eq ?isfatig yes))
-     (heart-burn yes)
-     (fast-heart-beat yes)
-     =>
-     (send ?ins put-dname "Heart Disease"))
-
-(defrule unknown "Unknown Disease"
-     (declare (salience -60))
-     ?ins <- (object (is-a DISEASE))
-     =>
-     (send ?ins put-dname "Unknown"))
 
 (defrule fever-check "Check Fever"
     ?ins <- (object (is-a FEVER))
@@ -257,7 +117,13 @@
     ;(declare (salience 47))
     ?ins <- (object (is-a PAIN) (ispain yes))
 	=>
-	(send ?ins put-location (ask-question "Where do you have a Pain (stomach body muscle joint chest body-muscle muscle-joint)? " stomach body muscle joint chest body-muscle muscle-joint)))
+	(send ?ins put-location (ask-question "Where do you have a Pain (body muscle joint chest body-muscle muscle-joint)? " body muscle joint chest body-muscle muscle-joint)))
+
+(defrule check-Stomachache "Stomachache"
+    ;(declare (salience 47))
+    ?ins <- (object (is-a INTERMEDIATE-DISEASE))
+	=>
+	(send ?ins put-stomachpain (yes-or-no-p "Do you have a stomachache (yes no)? ")))
 
 (defrule headache-check "Headache Check"
     ;(declare (salience 46))
@@ -266,7 +132,7 @@
 	(send ?ins put-isheadache (yes-or-no-p "Do you have a Headache (yes no)? ")))
 
 (defrule set-severity "Set Headache Severety"
-    ?ins <- (object (is-a HEADACHE))
+    ?ins <- (object (is-a HEADACHE) (isheadache yes))
 	=>
 	(send ?ins put-severity (yes-or-no-p "Is severe Headache (yes no)? ")))
 
@@ -289,6 +155,27 @@
     (assert (chills
               (yes-or-no-p "Do you have chills symptom (yes/no)? "))))
 
+
+(defrule check-loose-stool ""
+    (not (loose-stool ?))
+    =>
+    (assert (loose-stool
+              (yes-or-no-p "Do you have loose-stool symptom (yes/no)? "))))
+
+(defrule check-bowel-movement ""
+    (loose-stool yes)
+    (not (bowel-movement ?))
+    =>
+    (assert (bowel-movement
+              (yes-or-no-p "Do you have urgent need to bowel-movement symptom (yes/no)? "))))
+
+(defrule check-abdominal-cramping ""
+    (bowel-movement yes)
+    (not (abdominal-cramping ?))
+    =>
+    (assert (abdominal-cramping
+              (yes-or-no-p "Do you have abdominal cramping symptom (yes/no)? "))))
+
 (defrule check-sore-throat ""
     (not (sore-throat ?))
     =>
@@ -296,12 +183,14 @@
               (yes-or-no-p "Do you have Sore throat symptom (yes/no)? "))))
 
 (defrule check-swollen-lymph-glands ""
+    (sore-throat yes)
     (not (swollen-lymph-glands ?))
     =>
     (assert (swollen-lymph-glands
               (yes-or-no-p "Do you have swollen lymph glands symptom (yes/no)? "))))
 
 (defrule check-weight-loss ""
+    (check-swollen-lymph-glands yes)
     (not (weight-loss ?))
     =>
     (assert (weight-loss
@@ -314,6 +203,7 @@
               (yes-or-no-p "Do you have dry cough symptom (yes/no)? "))))
 
 (defrule check-sweating ""
+    (dry-cough yes)
     (not (sweating ?))
     =>
     (assert (sweating
@@ -333,12 +223,14 @@
               (yes-or-no-p "Do you have joint stiffness symptom (yes/no)? "))))
 
 (defrule check-joint-swelling ""
+    (joint-stiffness yes)
     (not (joint-swelling ?))
     =>
     (assert (joint-swelling
               (yes-or-no-p "Do you have joint-swelling symptom (yes/no)? "))))
 
 (defrule check-low-range-ofmotion ""
+    (joint-swelling yes)
     (not (low-range-ofmotion ?))
     =>
     (assert (low-range-ofmotion
@@ -351,18 +243,21 @@
               (yes-or-no-p "Do you have frequent-urination symptom (yes/no)? "))))
 
 (defrule check-hunger ""
+    (frequent-urination yes)
     (not (hunger ?))
     =>
     (assert (hunger
               (yes-or-no-p "Do you have hunger symptom (yes/no)? "))))
 
 (defrule check-thirsty-than-usual ""
+    (hunger yes)
     (not (thirsty-than-usual ?))
     =>
     (assert (thirsty-than-usual
               (yes-or-no-p "Do you have thirsty-than-usual symptom (yes/no)? "))))
 
 (defrule check-skin-itching ""
+    (thirsty-than-usual yes)
     (not (skin-itching ?))
     =>
     (assert (skin-itching
@@ -375,29 +270,159 @@
               (yes-or-no-p "Do you have heart-burn symptom (yes/no)? "))))
 
 (defrule check-fast-heart-beat ""
+    (heart-burn yes)
     (not (fast-heart-beat ?))
     =>
     (assert (fast-heart-beat
               (yes-or-no-p "Do you have fast heart beat symptom (yes/no)? "))))
 
-(defrule check-loose-stool ""
-    (not (loose-stool ?))
-    =>
-    (assert (loose-stool
-              (yes-or-no-p "Do you have loose-stool symptom (yes/no)? "))))
 
-(defrule check-bowel-movement ""
-    (not (bowel-movement ?))
-    =>
-    (assert (bowel-movement
-              (yes-or-no-p "Do you have urgent need to bowel-movement symptom (yes/no)? "))))
 
-(defrule check-abdominal-cramping ""
-    (not (abdominal-cramping ?))
-    =>
-    (assert (abdominal-cramping
-              (yes-or-no-p "Do you have abdominal cramping symptom (yes/no)? "))))
+;;;;;;;;;
+;;Disease
+;;;;;;;;;
+(defrule maleria "Maleria"
+     (declare (salience 58))
+     ?ins <- (object (is-a DISEASE) (ishighfever ?hf) (location ?loc) (severity ?sev))
+     ?miscins <- (object (is-a MISC) (isvomiting ?isvom) (isfatigue ?isfatig))
+     (test (eq ?loc body-muscle))
+     (test (eq ?hf yes))
+     (test (eq ?sev yes))
+     (test (eq ?isvom yes))
+     (test (eq ?isfatig yes))
+     (chills yes)
+     =>
+     (send ?ins put-dname "Maleria"))
 
+
+(defrule intdiarrhoea "Intermediate Diarrhoea"
+     (declare (salience 57))
+     ?ins <- (object (is-a DISEASE) (isfever ?hf) (location ?loc))
+     ?miscins <- (object (is-a MISC) (isvomiting ?isvom) (isnausea ?isnausea) (isfatigue ?isfatig))
+     ?tempdis <- (object (is-a INTERMEDIATE-DISEASE) (stomachpain ?stpain))
+     (test (eq ?stpain yes))
+     (test (eq ?hf yes))
+     (test (eq ?isvom yes))
+     (test (eq ?isnausea yes))
+     (loose-stool yes)
+     (bowel-movement yes)
+     (abdominal-cramping yes)
+     =>
+     (send ?tempdis put-tname "diarrhoea"))
+
+(defrule hiv-aids "HIV AIDS"
+     (declare (salience 56))
+     ?ins <- (object (is-a DISEASE) (isfever ?hf) (location ?loc) (isheadache ?sev))
+     ?miscins <- (object (is-a MISC) (isfatigue ?isfatig))
+     ?tempdis <- (object (is-a INTERMEDIATE-DISEASE) (tname ?disname))
+     (test (eq ?loc muscle-joint))
+     (test (eq ?hf yes))
+     (test (eq ?sev yes))
+     (test (eq ?disname "diarrhoea"))
+     (test (eq ?isfatig yes))
+     (sore-throat yes)
+     (swollen-lymph-glands yes)
+     (weight-loss yes)
+     =>
+     (send ?ins put-dname "HIV AIDS"))
+
+
+(defrule typhoid "Typhoid"
+     (declare (salience 56))
+     ?ins <- (object (is-a DISEASE) (istyphiodfever ?hf) (location ?loc) (isheadache ?sev))
+     ?miscins <- (object (is-a MISC) (isfatigue ?isfatig) (isweekness ?isweek))
+     ?tempdis <- (object (is-a INTERMEDIATE-DISEASE) (tname ?disname))
+     (test (eq ?loc muscle))
+     (test (eq ?hf yes))
+     (test (eq ?sev yes))
+     (test (eq ?disname "diarrhoea"))
+     (test (eq ?isfatig yes))
+     (test (eq ?isweek yes))
+     (dry-cough yes)
+     (sweating yes)
+     =>
+     (send ?ins put-dname "Typhoid"))
+
+
+(defrule cholera "Cholera"
+     (declare (salience 56))
+     ?ins <- (object (is-a DISEASE))
+     (object (is-a INTERMEDIATE-DISEASE) (tname ?disname))
+     (test (eq ?disname "diarrhoea"))
+     (dehydration yes)
+     =>
+     (send ?ins put-dname "Cholera"))
+
+(defrule diarrhoea "Diarrhoea"
+     (declare (salience 55))
+     ?ins <- (object (is-a DISEASE))
+     (object (is-a INTERMEDIATE-DISEASE) (tname ?disname))
+     (test (eq ?disname "diarrhoea"))
+     =>
+     (send ?ins put-dname "Diarrhoea"))
+
+(defrule viral-fever "Viral Fever"
+     (declare (salience 52))
+     ?ins <- (object (is-a DISEASE) (isfever ?fev) (location ?loc))
+     (test (eq ?fev yes))
+     (test (eq ?loc body-muscle))
+     =>
+     (send ?ins put-dname "Viral Fever"))
+
+(defrule arthritis "Arthritis"
+     (declare (salience 52))
+     ?ins <- (object (is-a DISEASE) (location ?loc))
+     (test (eq ?loc joint))
+     (joint-stiffness yes)
+     (joint-swelling yes)
+     (low-range-ofmotion yes)
+     =>
+     (send ?ins put-dname "Arthritis"))
+
+(defrule diabetes "Diabetes"
+     (declare (salience 52))
+     ?ins <- (object (is-a DISEASE))
+     ?miscins <- (object (is-a MISC) (isblurred_vision ?isblurr))
+     (test (eq ?isblurr yes))
+     (frequent-urination yes)
+     (hunger yes)
+     (thirsty-than-usual yes)
+     (skin-itching yes)
+     =>
+     (send ?ins put-dname "Diabetes"))
+
+(defrule imbalance-blood-pressure "Imbalance Blood Pressure"
+     (declare (salience 52))
+     ?ins <- (object (is-a DISEASE) (location ?loc) (severity ?sev))
+     ?miscins <- (object (is-a MISC) (isvomiting ?isvom) (isnausea ?isnausea) (isblurred_vision ?isblurr) (isbreathlessness ?isbreath) (isdizziness ?isdizz))
+     (test (eq ?loc chest))
+     (test (eq ?sev yes))
+     (test (eq ?isvom yes))
+     (test (eq ?isnausea yes))
+     (test (eq ?isblurr yes))
+     (test (eq ?isbreath yes))
+     (test (eq ?isdizz yes))
+     =>
+     (send ?ins put-dname "Imbalance Blood Pressure"))
+
+(defrule heart-disease "Heart Disease"
+     (declare (salience 52))
+     ?ins <- (object (is-a DISEASE))
+     ?miscins <- (object (is-a MISC) (isweekness ?isweek) (isfatigue ?isfatig) (isbreathlessness ?isbreath))
+     (test (eq ?isweek yes))
+     (test (eq ?isbreath yes))
+     (test (eq ?isfatig yes))
+     (heart-burn yes)
+     (fast-heart-beat yes)
+     =>
+     (send ?ins put-dname "Heart Disease"))
+
+(defrule unknown "Unknown Disease"
+     (declare (salience -60))
+     ?ins <- (object (is-a DISEASE) (dname ?dname))
+     (test (eq ?dname nil))
+     =>
+     (send ?ins put-dname "Unknown"))
 
 
 ;;*******************
