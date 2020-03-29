@@ -223,6 +223,11 @@
      =>
      (send ?ins put-dname "Heart Disease"))
 
+(defrule unknown "Unknown Disease"
+     (declare (salience -60))
+     ?ins <- (object (is-a DISEASE))
+     =>
+     (send ?ins put-dname "Unknown"))
 
 (defrule fever-check "Check Fever"
     ?ins <- (object (is-a FEVER))
@@ -440,9 +445,39 @@
     (object (is-a PERSON) (age ?age))
     (test (neq ?dis_name nil))
     (test (eq ?age adult))
-    (test (eq ?dis_name "Heart Disease"))
+    (test (or (eq ?dis_name "Heart Disease") (eq ?dis_name "Imbalance Blood Pressure")))
 	=>
 	(send ?ins put-pdoctor "Cardiologist"))
+
+(defrule set-Infectious "set prescribed doctor to Infectious disease doctors"
+    (declare (salience 60))
+    ?ins <- (object (is-a DISEASE) (dname ?dis_name))
+    (object (is-a PERSON) (age ?age))
+    (test (neq ?dis_name nil))
+    (test (eq ?age adult))
+    (test (eq ?dis_name "HIV AIDS"))
+	=>
+	(send ?ins put-pdoctor "Infectious disease doctors"))
+
+(defrule set-endocrinologists "set prescribed doctor to Endocrinologists"
+    (declare (salience 60))
+    ?ins <- (object (is-a DISEASE) (dname ?dis_name))
+    (object (is-a PERSON) (age ?age))
+    (test (neq ?dis_name nil))
+    (test (eq ?age adult))
+    (test (eq ?dis_name "Diabetes"))
+	=>
+	(send ?ins put-pdoctor "Endocrinologists or Nephrologists"))
+
+(defrule set-orthopedic "set prescribed doctor to Orthopedic"
+    (declare (salience 60))
+    ?ins <- (object (is-a DISEASE) (dname ?dis_name))
+    (object (is-a PERSON) (age ?age))
+    (test (neq ?dis_name nil))
+    (test (eq ?age adult))
+    (test (eq ?dis_name "Arthritis"))
+	=>
+	(send ?ins put-pdoctor "Orthopedic"))
 
 (defrule set-physician "set prescribed doctor to physician"
     (declare (salience 60))
