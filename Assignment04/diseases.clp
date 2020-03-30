@@ -362,8 +362,9 @@
      (send ?ins put-dname "Diarrhoea"))
 
 (defrule viral-fever "Viral Fever"
-     (declare (salience 52))
-     ?ins <- (object (is-a DISEASE) (isfever ?fev) (location ?loc))
+     (declare (salience -52))
+     ?ins <- (object (is-a DISEASE) (dname ?dname) (isfever ?fev) (location ?loc))
+     (test (eq ?dname nil))
      (test (eq ?fev yes))
      (test (eq ?loc body-muscle))
      =>
