@@ -1,9 +1,40 @@
 ;; This is a disease prediction system. It will ask for basic symptom like do you have pain? and where is the pain? etc.
-;; and with the help of these symptoms it will predict the disease. We can expand the knowledge of this program
-;; so that it can predict more disease. We can also add prescription according to the disease or doctor recommendation
-;; like you need general physician or orthopedics etc.
+;; and with the help of these symptoms it will predict the disease and recommend doctor according to it. We can expand the knowledge of this program
+;; so that it can predict more disease. We can also add prescription according to the disease.
 
-;; ************* To start your diagnosis run command "diagnose.". **********
+;;****************************Disease Example*********************
+;;
+;;Maleria Symptoms:
+;;1- High Fever
+;;2- Body-Muscle pain
+;;3- Vomiting
+;;4- Fatigue
+;;5- Severe Headache
+;;6- Chills
+;;
+;;Diarrhoea Symptoms: (An intermediate disease)
+;;1- Stomach Ache
+;;2- Fever
+;;3- Nausea
+;;4- Vomitting
+;;5- Abdominal cramping
+;;6-Urgent need to have a bowel movement
+;;7- Loose stool
+;;
+;;************************************************************************
+
+;;****************** Some Importants things to keep in mind *******************
+;;1- The program will ask if you have fever or not before asking for High Fever. If you say no to fever then it will not ask for high fever
+;;      or typhoid fever(Does fever started slowly then increased severely?).
+;;       There are a lot of attribute depending on other attribute like fever and those are pain, headache etc.
+;;2- If the program found that you don't have initial symptopm of any disease then it won't ask for any other symptopms of that particular
+;;      disease and procede further for evaluation for other symptopms.
+;;3 - This program also have intermediate disease like Diarrhoea which is a symptom for diseases like cholera.
+;;*********************************************************************************************************
+
+
+
+;; ************* To start your diagnosis first reset then run from clips program. **********
 
 ;; Created by:-
 ;;     1) Ghalib Saleem : U03151409
