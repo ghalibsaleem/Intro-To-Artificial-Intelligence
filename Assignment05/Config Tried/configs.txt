@@ -1,0 +1,1 @@
+Neural Network		Epocs		Learning Rate		Momentum	Accuracy

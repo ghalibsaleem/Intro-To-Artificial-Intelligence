@@ -1,0 +1,20 @@
+@RELATION footballtrain
+@ATTRIBUTE Temp {cool, warm, cold}
+@ATTRIBUTE Opponentpct NUMERIC
+@ATTRIBUTE Windy {Yes, No}
+@ATTRIBUTE Outcome {Win, Lose}
+@DATA
+cool,40,Yes,Win
+cool,55,No,Lose
+cool,60,Yes,Lose
+cool,75,No,Lose
+cool,30,No,Win
+warm,85,No,Win
+warm,10,Yes,Win
+warm,62,No,Win
+warm,30,No,Win
+cold,50,Yes,Lose
+cold,35,Yes,Lose
+cold,70,No,Win
+cold,40,No,Win
+cold,65,No,Win
