@@ -1,11 +1,11 @@
-### Programming Assignment 1 - Depth First Search ###
+### Depth First Search ###
 
 #### Contributors ####
 
 1) Divyanshu Gupta : U21369422
 2) Ghalib Saleem : U03151409
 
-The purpose of this assignment is to traverse a graph using A-Star search using different type of heuristics and print out all the possible paths using same heuristics of A-Star.
+The purpose of this project is to traverse a graph using A-Star search using different type of heuristics and print out all the possible paths using same heuristics of A-Star.
 
 User enters the starting node (from where the traversal will start), the ending node (where the traversing will end), whether step by step option enables or not, and heuristics.
 After finding path program will ask to show graph or not 
