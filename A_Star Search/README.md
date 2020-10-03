@@ -1,4 +1,4 @@
-### Depth First Search ###
+### A* Search ###
 
 #### Contributors ####
 
